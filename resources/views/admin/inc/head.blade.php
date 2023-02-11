@@ -36,7 +36,7 @@
 
                 <link
             rel="stylesheet"
-            href="{{ url('admin-theme') }}/css/bootstrap.min.css"
+            href="{{ url('admin-theme') }}/assets/css/bootstrap.min.css"
           >
         <link rel="stylesheet" href="{{ Url('admin-theme') }}/assets/css/rtl.css" type="text/css">
         <!-- App styles -->
