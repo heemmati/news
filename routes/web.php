@@ -22,6 +22,9 @@ Route::namespace('Admin')->prefix('/panel')->middleware(['auth'])->group(functio
 
 
 
+
+
+
          $exitCode = Artisan::call('route:clear');
          $exitCode = Artisan::call('view:clear');
 
