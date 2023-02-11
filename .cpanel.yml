@@ -1,6 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home/rakof/public_html/
-    - /bin/cp * -fr $DEPLOYPATH
-
