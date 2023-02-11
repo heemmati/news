@@ -5,8 +5,3 @@ deployment:
     - /bin/cp * -fr $DEPLOYPATH
     - export DEPLOYPATH=/home/rakof/public_html/
     - /bin/cp * -fr $DEPLOYPATH
-
-
-
-
-
