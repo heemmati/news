@@ -20,11 +20,6 @@ Route::namespace('Admin')->prefix('/panel')->middleware(['auth'])->group(functio
     Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('cache:clear');
 
-
-
-
-
-
          $exitCode = Artisan::call('route:clear');
          $exitCode = Artisan::call('view:clear');
 
