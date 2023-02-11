@@ -1,6 +1,7 @@
 \<script src="{{ Url('admin-theme') }}/vendors/bundle.js"></script>
 <!-- Plugin scripts -->
 <script src="{{ Url('admin-theme') }}/vendors/charts/morsis/morris.min.js"></script>
+<script src="{{ Url('admin-theme') }}/assets/js/bootstrap.min.js"></script>
 <script src="{{ Url('admin-theme') }}/assets/js/examples/charts/morsis.js"></script>
 
 

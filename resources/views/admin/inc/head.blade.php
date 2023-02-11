@@ -6,18 +6,10 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">-->
-
     <title>@lang('site.site_name')</title>
-
-
     @ischeck($logo)
     <link rel="icon" href="{{ \Illuminate\Support\Facades\Storage::url($logo->print) }}" type="image/png">
     @endischeck
-
-
-
-
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!--<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>-->
@@ -44,9 +36,8 @@
 
                 <link
             rel="stylesheet"
-            href="https://cdn.rtlcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
-            integrity="sha384-cSfiDrYfMj9eYCidq//oGXEkMc0vuTxHXizrMOFAaPsLt1zoCUVnSsURN+nef1lj"
-            crossorigin="anonymous">
+            href="{{ url('admin-theme') }}/css/bootstrap.min.css"
+          >
         <link rel="stylesheet" href="{{ Url('admin-theme') }}/assets/css/rtl.css" type="text/css">
         <!-- App styles -->
 
