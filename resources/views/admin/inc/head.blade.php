@@ -11,12 +11,6 @@
     <link rel="icon" href="{{ \Illuminate\Support\Facades\Storage::url($logo->print) }}" type="image/png">
     @endischeck
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!--<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>-->
-{{--    <!-- Favicon -->--}}
-{{--    <link rel="shortcut icon" href="{{ Url('admin-theme') }}/assets/media/image/favicon.png"/>--}}
-    <!-- Plugin styles -->
-    <!--<link rel="stylesheet" href="{{ Url('admin-theme') }}/vendors/bundle.css" type="text/css">-->
-    <!-- Slick -->
     <link rel="stylesheet" href="{{ Url('admin-theme') }}/vendors/slick/slick.css" type="text/css">
     <link rel="stylesheet" href="{{ Url('admin-theme') }}/vendors/slick/slick-theme.css" type="text/css">
     <!-- Daterangepicker -->
