@@ -1,12 +1,8 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/myabhar/public_html/
+    - export DEPLOYPATH=/home/$cpuser/public_html/
     - /bin/cp * -fr $DEPLOYPATH
-     - export DEPLOYPATH2=/home/rakof/public_html/
-     - /bin/cp * -fr $DEPLOYPATH2
-
-
 
 
 
