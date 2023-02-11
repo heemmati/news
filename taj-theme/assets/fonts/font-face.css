@@ -1,0 +1,86 @@
+/* Dana */
+
+@font-face{
+font-family:Yekan;
+font-style:normal;
+font-weight:10;
+src:url(dana/DanaFaNum-Hairline.cd8f8f1.woff2) format("woff2"),
+url(dana/DanaFaNum-Hairline.6fd77e0.woff) format("woff")
+}
+
+@font-face{
+	font-family:Yekan;
+	font-style:normal;
+	font-weight:100;
+	src:url(dana/DanaFaNum-Thin.d346915.woff2) format("woff2"),
+url(dana/DanaFaNum-Thin.2ae8304.woff) format("woff")
+}
+
+@font-face{
+font-family:Yekan;
+font-style:normal;
+font-weight:200;
+src:
+url(dana/DanaFaNum-UltraLight.f173995.woff2) format("woff2"),
+url(dana/DanaFaNum-UltraLight.9cfdde1.woff) format("woff")
+}
+
+
+@font-face{
+font-family:Yekan;
+font-style:normal;
+font-weight:300;
+src:url(dana/DanaFaNum-Light.e79575d.woff2) format("woff2"),
+url(dana/DanaFaNum-Light.c655858.woff) format("woff")
+}
+
+@font-face{
+font-family:Yekan;
+font-style:normal;
+font-weight:500;
+src:url(dana/DanaFaNum-Medium.0210233.woff2) format("woff2"),
+url(dana/DanaFaNum-Medium.da0d5b8.woff) format("woff")
+}
+
+@font-face{
+font-family:Yekan;
+font-style:normal;
+font-weight:600;
+src:url(dana/DanaFaNum-DemiBold.284df8e.woff2) format("woff2"),
+url(dana/DanaFaNum-DemiBold.7c4d5d8.woff) format("woff")
+}
+
+
+@font-face{
+	font-family:Yekan;
+	font-style:normal;
+	font-weight:800;
+	src:url(dana/DanaFaNum-ExtraBold.4c1a1f6.woff2) format("woff2"),
+url(dana/DanaFaNum-ExtraBold.0e3ba77.woff) format("woff")
+}
+
+@font-face{
+	font-family:Yekan;
+	font-style:normal;
+	font-weight:900;
+	src:url(dana/DanaFaNum-Black.ac8bd49.woff2) format("woff2"),
+url(dana/DanaFaNum-Black.7299ba2.woff) format("woff")
+}
+
+@font-face{
+	font-family:Yekan;
+	font-style:normal;
+	font-weight:700;
+	src:url(dana/DanaFaNum-ExtraBold.4c1a1f6.woff2) format("woff2"),
+url(dana/DanaFaNum-ExtraBold.0e3ba77.woff) format("woff")
+}
+
+@font-face{
+	font-family:Yekan;
+	font-style:normal;
+	font-weight:400;
+	src:url(dana/DanaFaNum-Regular.45f462c.woff2) format("woff2"),
+url(dana/DanaFaNum-Regular.c0b7574.woff) format("woff")
+}
+/* Dana */
+
