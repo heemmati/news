@@ -308,7 +308,7 @@ if($uses_can){
      
                        if (isset($title) && !empty($title) && strlen($title) < 255) {
                            $e2title = $title;
-    $title = $title . '| تکلی';
+                            $title = $title . '|' . __('site.site_name');
             $base = Base::where('title', $title)->orWhere('title' , $e2title)->orWhere('title' , 'LIKE' , '%' . $e2title . '%')->first();
             
             if(!isset($base) || empty($base)){
