@@ -1,0 +1,674 @@
+@extends('site.layout.master')
+
+
+@section('seos')
+
+    <title>@lang('site.seo_first_page')</title>
+
+    <meta name="description" content="@lang('site.seo_first_description')" />
+
+    <link rel="alternate" hreflang="fa" href="https://www.techli.ir" />
+
+    <meta http-equiv="content-language" content="fa" />
+
+    <meta name="keywords" content="@lang('site.seo_first_keywords')" />
+
+    <meta name="dc.publisher" content="@lang('site.seo_first_page')" />
+    <meta name="dc.identifier" content="https://www.techli.ir" />
+    <meta name="copyright" content="©2021 techli News Agency (www.techli.ir)" />
+    <!--<meta name="dcterms.created" content="2002-10-14T15:24:23+00:00" />-->
+    <!--<meta name="dcterms.modified" content="2021-08-11 T 09:22:56 +0430" />-->
+    <meta itemprop="name" content="@lang('site.seo_first_page')" />
+    <meta itemprop="description" content="@lang('site.seo_first_description')" />
+    <meta itemprop="image" content="https://www.techli.ir/storage//photos/1/ivna-..-site.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@lang('site.seo_first_page')" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:site" content="@IvnaNews_Agency" />
+    <meta name="twitter:image:src" content="https://www.techli.ir/storage//photos/1/ivna-..-site.png" />
+    <meta name="twitter:image" content="https://www.techli.ir/storage//photos/1/ivna-..-site.png" />
+    <meta name="twitter:image:alt" content="@lang('site.seo_first_page')" />
+    <meta name="twitter:domain" content="https://www.techli.ir" />
+    <meta property="og:title" content="@lang('site.seo_first_page')" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.techli.ir" />
+    <meta property="og:image" content="https://www.techli.ir/storage//photos/1/ivna-..-site.png" />
+    <meta property="og:description" content="@lang('site.seo_first_description')" />
+    <meta property="og:site_name" content="@lang('site.seo_site_name')" />
+    <meta property="article:published_time" content="2021-08-11 T 09:22:56 +0430" />
+    <meta name="date" content="2021-08-11 T 09:22:56 +0430" />
+    <meta property="og:locale" content="fa_IR" />
+    <meta property="og:article:author" content="@lang('site.seo_first_page')" />
+    <meta property="og:article:section" content="صفحه نخست" />
+    <meta name="generator" content="https://www.techli.ir" />
+    <meta name="language" content="fa" />
+    <meta name="rating" content="General" />
+    <meta name="expires" content="never" />
+    <meta name="robots" content="INDEX,FOLLOW" />
+    <meta name="publisher" content="@lang('site.seo_first_page')" />
+    <link rel="canonical" href="https://www.techli.ir/" />
+
+
+
+@endsection
+
+
+
+@section('content')
+
+    @if(isset($specifics) && !empty($specifics) && count($specifics) > 0)
+        <div class="container">
+            <div class="breaking-news">
+                <span>@lang('site.specific_news')</span>
+                <ul>
+                    @foreach($specifics as $special)
+                        <li>
+                            <a href="{{ $special->path() }}"
+                               title="{{ $special->title }}">
+                                {{ $special->title }}
+                            </a></li>
+                    @endforeach
+                </ul>
+
+            </div>
+        </div>
+    @endif
+    <div class="container">
+        <div class="row" id="content">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8 middl">
+
+                        @if(isset($bignews) && !empty($bignews) && count($bignews) > 0)
+
+                            @if(isset($bignews[0]) && !empty($bignews[0]) )
+                                <div class="box-one">
+                                    <div class="flexslider" id="posts-box-1-widget-4">
+                                        <ul class="slides">
+
+                                            <li>
+                                                <section class="box-content">
+                                                    <div class="box-content-right">
+                                                        <a href="{{ $bignews[0]->path() }}"><img width="410" height="285"
+                                                                        src="{{ $bignews[0]->picture() }}"
+                                                                        alt="{{ $bignews[0]->title }}"
+                                                                        title="{{ $bignews[0]->title }}"/></a>
+                                                        <span
+                                                            class="boxe-m-date">{{ $bignews[0]->timeHandler() }}</span>
+                                                    </div>
+                                                    <div class="box-content-left">
+                                                        <h3 class="post-title2">
+                                                            @if(isset($bignews[0]->head_title) && !empty($bignews[0]->head_title))
+                                                            <small class=" text-muted"><i class="fa fa-stop"
+                                                                                          aria-hidden="true"></i>
+                                                                {{ $bignews[0]->head_title }}
+                                                            </small>
+                                                            @endif
+                                                                
+                                                            <a href="{{ $bignews[0]->path() }}">
+                                                                {{ $bignews[0]->title }}
+                                                            </a>
+                                                        </h3>
+
+                                                        <div class="post-excerpt2">
+                                                            <p>
+                                                                {{ $bignews[0]->description }}
+                                                            </p>
+                                                        </div>
+
+                                                    </div>
+                                                </section>
+                                            </li>
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
+                            @if(isset($bignews[1]) && !empty($bignews[1]) )
+
+                                <div class="box-tow">
+                                    @foreach($bignews as $key => $big)
+                                        @if($key > 0)
+                                            <section class="box-content">
+                                                <div class="box-content-right">
+                                                    <a href="{{ $big->path() }}"><img width="410" height="285"
+                                                                    src="{{ $big->picture() }}"
+                                                                    alt="{{ $big->title }}"
+                                                                    title="{{ $big->title }}"/></a>
+                                                    <span
+                                                        class="boxe-m-date">{{ $big->timeHandler() }}</span>
+                                                </div>
+                                                <div class="box-content-left">
+                                                    <h3 class="post-title2">
+                                                        <small class=" text-muted"><i class="fa fa-stop"
+                                                                                      aria-hidden="true"></i>
+                                                            {{ $big->head_title }}
+                                                        </small>
+                                                        <a href="{{ $big->path() }}">
+                                                            {{ $big->title }}
+                                                        </a>
+                                                    </h3>
+
+                                                    <div class="post-excerpt2">
+                                                        <p>
+                                                            {{ $big->description }}
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                            </section>
+                                        @endif
+                                    @endforeach
+                                </div>
+
+                            @endif
+
+                        @endif
+                        <div class="separator"></div>
+
+                        @if(isset($importants) && !empty($importants) && count($importants) > 0)
+                            <section class="posts">
+                                <div class="lead-posts">
+
+                                    <div class="box-header"><b> :: @lang('site.choosen_news')</b><span><a
+                                                href="{{ route('site.blog') }}">@lang('site.archive')</a></span></div>
+                                    @foreach($importants as $important)
+                                        <div class="col-md-4">
+                                            <div class="lead-post-excerpt">
+                                                <a class="lead-post-excerpt-thumb"
+                                                   href="{{ $important->path() }}"><img
+                                                        width="185" height="125"
+                                                        src="{{  $important->picture() }}"
+                                                        alt-="{{ $important->head_title }}"
+                                                        title=" {{ $important->head_title }}"/></a>
+
+                                                <span
+                                                    class="boxe-1-left-date">{{ $important->timeHandler() }}</span>
+                                                <h3 class="post-title2 post-title3">
+                                                    @if(isset($important->head_title) && !empty($important->head_title))
+                                                    <small class=" text-muted"><i class="fa fa-stop"
+                                                                                  aria-hidden="true"></i>
+                                                        {{ $important->head_title }}</small>
+                                                    @endif
+
+                                                    <br>
+                                                    <a
+                                                        href="{{ $important->path() }}">
+                                                        {{ $important->title }}
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <!--/.lead-post-excerpt-->
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </section>
+                        @endif
+                        <div class="separator"></div>
+
+
+                        @if(isset($latests) && !empty($latests) && count($latests) > 0)
+                            <section class="posts">
+                                <div class="box-header"><b>@lang('site.last_news') </b></div>
+                                @foreach($latests as $new)
+                                    <div class="post-item-excerpt clearfix">
+                                        <div class="post-thumbnail medium">
+                                            <a href="{{ $new->path() }}"><img
+                                                    width="135" height="95"
+                                                    src="{{ $new->picture() }}"
+                                                    alt="{{ $new->title }}"
+                                                    title="{{ $new->title }}"/></a>
+                                            <span class="boxe-1-left-date">{{ $new->timeHandler() }}</span>
+                                        </div>
+                                        <div class="post-excerpt">
+                                            @if(isset($new->head_title) && !empty($new->head_title))
+                                            <small class=" text-muted"><i class="fa fa-stop" aria-hidden="true"></i>
+                                                {{ $new->head_title }}</small>
+                                            @endif
+                                            <h3 class="post-title2">
+                                                <a href="{{ $new->path() }}">
+                                                    {{ $new->title }}
+                                                </a>
+                                            </h3>
+                                            <div class="post-excerpt-summary">
+                                                <p>{{ \Illuminate\Support\Str::limit($new->description , 200) }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+
+
+                            </section>
+                        @endif
+
+
+@if(isset($cat1s) && !empty($cat1s))
+@if(isset($cat1s->articles) && !empty($cat1s->articles) && count($cat1s->articles) > 0)
+                        <section class="posts">
+                            
+                            <div class="lead-posts">
+                                <div class="row">
+                                    <div class="box-header"><b> :: @lang('site.cat1_news')</b><span><a href="{{ route('site.blog') }}">@lang('site.archive')</a></span></div>
+                                    <div class="boxe-1-right">
+@if(isset($cat1s->articles[0]))
+                                        <div class="lead-post-excerptb">
+                                            <a class="lead-post-excerpt-thumbb"
+                                               href="{{ $cat1s->articles[0]->path() }}"><img
+                                                    width="260" height="165"
+                                                    src="{{ $cat1s->articles[0]->picture() }}"
+                                                    alt="{{ $cat1s->articles[0]->title }}"
+                                                    title="{{ $cat1s->articles[0]->title }}"/></a>
+                                            <span class="boxe-1-left-date">{{ $cat1s->articles[0]->timeHandler() }}</span>
+
+                                            <h3 class="post-title2">
+                                                @if(isset($cat1s->articles[0]->head_title) && !empty($cat1s->articles[0]->head_title) )
+                                                <small class=" text-muted"><i class="fa fa-stop"
+                                                                              aria-hidden="true"></i>
+                                                {{ $cat1s->articles[0]->head_title }}
+                                                </small>
+                                                 @endif
+                                                
+                                                    <a
+                                                    href="{{ $cat1s->articles[0]->path() }}">
+                                                        {{ $cat1s->articles[0]->title }}
+                                                    </a>
+                                                    
+                                                   
+                                            </h3>
+
+                                            <div class="lead-post-excerpt-intro">
+                                                <p> 
+                                                {{ $cat1s->articles[0]->description }}
+                                                </p>
+                                            </div>
+
+                                        </div>
+         @endif                               <!--/.lead-post-excerpt-->
+
+                                    </div>
+
+                                    <div class="boxe-1-left">
+@if( count($cat1s->articles) > 0)
+                @foreach($cat1s->articles as $key => $new)
+                                        <div class="last-post">
+                                            <div class="column-post-item clearfix">
+                                                <div class="column-post-thumb">
+                                                    <a href="{{ $new->path() }}"><img
+                                                            width="100" height="70"
+                                                            src="{{ $new->picture() }}"
+                                                            alt="{{ $new->title }}"
+                                                            title="{{ $new->title }}"/></a>
+                                                    </a>
+                                                </div>
+                                                <h3 class="post-title">
+                                                    <a href="{{ $new->path() }}">
+                                                        {{ $new->title }}
+                                                        </a><small
+                                                        class=" text-muted">{{ $new->timeHandler() }}</small>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        @endforeach
+
+@endif
+
+
+                                    </div>
+                                </div>
+                            </div>
+                         
+                        </section>
+                        
+                         @endif
+                        @endif
+                        
+                        
+                        
+                        <div class="separator"></div>
+
+                        <div class="textwidget">
+                            <p><a href="#"> <img src="{{ url('taj-theme') }}/assets/img/ads.png" alt="" width="100%"
+                                                 height="90"/> </a></p>
+                        </div>
+@if(isset($cat2s) && !empty($cat2s) )
+@if(isset($cat2s->articles) && !empty($cat2s->articles) && count($cat2s->articles) > 0)
+                        <section class="posts">
+                            <div class="box-header"><b> :: @lang('site.cat2_news')</b></div>
+                            @foreach($cat2s->articles as $catn)
+                            <div class="post-item-excerpt clearfix">
+                                <div class="post-thumbnail medium">
+                                    <a href="{{ $catn->path() }}"><img
+                                            width="135" height="95" src="{{ $catn->picture() }}"
+                                            alt="{{ $catn->title }}"
+                                            title="{{ $catn->title }}" \/></a>
+                                    <span class="boxe-1-left-date">{{ $catn->timeHandler() }}</span>
+                                </div>
+                                <div class="post-excerpt">
+                                    @if(isset($catn->head_title) && !empty($catn->head_title))
+                                    <small class=" text-muted"><i class="fa fa-stop" aria-hidden="true"></i>
+                                    {{ $catn->head_title }}
+                                    </small>
+                                        @endif
+                                    <h3 class="post-title2">
+                                        <a href="{{ $catn->path() }}">
+                                    {{ $catn->title }}
+                                </a>
+                                    </h3>
+                                    <div class="post-excerpt-summary">
+                                        <p>{{ $catn->description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                          @endforeach
+                            <div class="more-top-news">
+                                <a href="https://techli.ir/%D9%81%D9%88%D8%AA%D8%A8%D8%A7%D9%84-%D8%AC%D9%87%D8%A7%D9%86">
+                                    <h3> @lang('site.all_cat2') </h3>
+                                </a>
+                                </div>
+                        </section>
+@endif
+@endif
+                        @if(isset($bottoms) && !empty($bottoms) && count($bottoms) > 0)
+                            <section class="posts">
+                                <div class="lead-posts">
+                                    <div class="box-header"><b> :: @lang('site.sardabir_sug') </b><span><a
+                                                href="{{ route('site.blog') }}">@lang('site.archive')</a></span>
+                                    </div>
+                                    @foreach($bottoms as $bottom)
+                                        <div class="col-md-4">
+                                            <div class="lead-post-excerpt">
+                                                <a class="lead-post-excerpt-thumb"
+                                                   href="{{ $bottom->path() }}"><img
+                                                        width="185" height="125"
+                                                        src="{{ $bottom->picture() }}"
+                                                        alt="{{ $bottom->title }}"
+                                                        title="{{ $bottom->title }}"/></a>
+                                                <span class="boxe-1-left-date">{{ $bottom->timeHandler() }}</span>
+                                                <h3 class="post-title2">
+                                                    
+                                                    @if(isset($bottom->head_title) && !empty($bottom->head_title))
+                                    <small class=" text-muted"><i class="fa fa-stop"
+                                                                                  aria-hidden="true"></i>
+                                                        {{ $bottom->head_title }}
+                                                    </small>
+                                        @endif
+                                        
+                                                     <a
+                                                        href="{{ $bottom->path() }}">{{ $bottom->title }}</a>
+                                                </h3>
+
+                                                <div class="lead-post-excerpt-intro">
+                                                    <p>
+                                                        {{ $bottom->description }}
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                            <!--/.lead-post-excerpt-->
+                                        </div>
+
+                                    @endforeach
+                                </div>
+                            </section>
+                            <div class="separator"></div>
+                        @endif
+                        <div class="textwidget">
+                            <p><a href="#"> <img src="{{ url('taj-theme') }}/assets/img/ads.png" alt="" width="100%"
+                                                 height="90"/> </a></p>
+                        </div>
+
+
+@if(isset($cattags) && !empty($cattags))
+
+                        <div class="boxe ">
+
+
+                            <div class="cat-tabs-header">
+                                <ul>
+                                    @foreach($cattags as $key => $ctag)
+                                    <li><a href="#{{ $key + 2 }}"> {{ $ctag->title }} </a></li>
+                                     @endforeach
+                                </ul>
+                            </div>
+                                    @foreach($cattags as $key => $ctag)
+                            <div class="cat-tabs-wrap cat-tabs-wrap{{ $key + 1}}" id="{{ $key + 2}}">
+
+@foreach($ctag->articles as $taga)
+
+                                <div class="post-item-excerpt clearfix">
+                                    <div class="post-thumbnail medium">
+                                        <a href="{{ $taga->path() }}"><img
+                                                width="135" height="95"
+                                                src="{{ $taga->picture() }}"
+                                                alt="{{ $taga->title }}"
+                                                title="{{ $taga->title }}"/></a>
+                                        <span class="boxe-1-left-date">{{ $taga->timeHandler() }}</span>
+                                    </div>
+                                    <div class="post-excerpt">
+                                        
+                                               @if(isset($taga->head_title) && !empty($taga->head_title))
+                                    <small class=" text-muted"><i class="fa fa-stop"
+                                                                                  aria-hidden="true"></i>
+                                                        {{ $taga->head_title }}
+                                                    </small>
+                                        @endif
+                                        
+                                   
+                                        <h3 class="post-title2">
+                                     
+                                     <a href="{{ $taga->title }}">{{ $taga->title }}</a>
+                                        </h3>
+                                        <div class="post-excerpt-summary">
+                                            <p> 
+                                            {{ $taga->description }}
+                                                </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+@endforeach
+
+
+                            </div>
+                            
+                            @endforeach
+
+                          
+                        </div>
+@endif
+
+                    </div>
+                    <div class="col-md-4 left">
+                        <div id="sidebar-left">
+                            <div class="sidebar-left">
+                                <div class="scrollbar-inner" id="politics-scrollable">
+
+                                    @if(isset($mviews) && !empty($mviews) && count($mviews) >0)
+                                        <div class="sidebar-box">
+                                            <div class="column-header"><span class="bullet"></span>
+                                                <h3><b>@lang('site.most_viewd')</b></h3>
+                                            </div>
+                                            <div class="sidebar-box-content-left">
+                                                <div class="post-wrap">
+                                                    @foreach($mviews as $new)
+                                                    @if(isset($new->article) && !empty($new->article) && $new->article->status == 1)
+                                                    <div class="column-post-item clearfix">
+                                                        <div class="column-post-thumb">
+                                                            <a href="{{ $new->article->path() }}"><img
+                                                                    width="100" height="70"
+                                                                    src="{{ $new->article->picture() }}"
+                                                                    alt="{{ $new->article->title }}"
+                                                                    title="{{ $new->article->title }}"/></a>
+                                                        </div>
+                                                        <h3 class="post-title">
+                                                            <small class=" text-muted">{{ $new->article->head_title }}</small>  <a
+                                                                href="{{ $new->article->path() }}">
+                                                            {{ $new->article->title }}
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                        @if(isset($mcomments) && !empty($mcomments) && count($mcomments) >0)
+                                        <div class="sidebar-box">
+                                        <div class="column-header"><span class="bullet"></span>
+                                            <h3><b>@lang('site.most_commented')</b></h3>
+                                        </div>
+                                        <div class="sidebar-box-content-left">
+                                            <div class="post-wrap">
+                                                @foreach($mcomments as $comment)
+                                                <div class="column-post-item clearfix">
+                                                    @if(isset($comment->article) && !empty($comment->article) && $comment->article->status == 1)
+                                                    <div class="column-post-thumb">
+                                                        <a href="{{ $comment->article->path() }}"><img
+                                                                width="100" height="70"
+                                                                src="{{ $comment->article->picture() }}"
+                                                                alt="{{ $comment->article->title }}"
+                                                                title="{{ $comment->article->title }}"/></a>
+                                                    </div>
+                                                    <h3 class="post-title">
+                                                        <a href="{{ $comment->article->path() }}">
+                                                            {{ $comment->article->title }}
+                                                            </a>
+                                                    </h3>
+                                                    @endif
+                                                </div>
+                                                @endforeach
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                        @endif
+
+                                    <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img
+                                                src="{{ url('taj-theme') }}/assets/img/ads-1.png"></a></div>
+
+                                    @if(isset($notes) && !empty($notes) && count($notes) > 0)
+                                        <div class="box_author">
+                                            <div class="box-header"><b><i class="fa fa-book" aria-hidden="true"></i>
+                                                    @lang('site.notes')</b><span><a
+                                                        href="{{ route('site.blog') }}">@lang('site.archive')</a></span>
+                                            </div>
+                                            @if(isset($notes[0]) && !empty($notes[0]) )
+                                                <div class="box_author-top">
+                                                    <a class="box_author-thumb"
+                                                       href="{{ $notes[0]->path() }}"><img
+                                                            width="293" height="200"
+                                                            src="{{ $notes[0]->picture() }}"
+                                                            alt="{{ $notes[0]->title }}"
+                                                            title="{{ $notes[0]->title }}"/></a>
+                                                    <div id="lin-10"></div>
+                                                    <small class=" text-muted">@lang('site.author')
+                                                        : @lang('site.author_name')</small> <br> <small
+                                                        class=" text-author "><i
+                                                            class="fa fa-stop" aria-hidden="true"></i>
+
+                                                        {{ $notes[0]->head_title }}
+
+                                                    </small><br>
+                                                    <div id="lin-10"></div>
+                                                    <div class="box_author-top-titl"><a
+                                                            href="{{ $notes[0]->path() }}">
+                                                            {{ $notes[0]->title }}
+                                                        </a></div>
+                                                    <br>
+                                                    <p>
+                                                        {{ $notes[0]->description }}
+                                                    </p>
+                                                </div>
+                                            @endif
+
+                                            @if(isset($notes) && !empty($notes) && count($notes) > 0)
+                                                <div class="author-bottom">
+                                                    @foreach($notes as $key => $bottom)
+                                                        @if($key > 0)
+                                                            <div class="author-box">
+                                                                <div class="author-box-image">
+                                                                    <a href="{{ $bottom->path() }}"><img
+                                                                            width="50" height="50"
+                                                                            src="{{ $bottom->picture() }}"
+                                                                            alt="{{ $bottom->title }}"
+                                                                            title="{{ $bottom->title }}"/></a>
+                                                                </div>
+                                                                <small class=" text-muted"><i class="fa fa-stop"
+                                                                                              aria-hidden="true"></i>
+                                                                    {{ $bottom->head_title }}</small> 
+                                                                <div class="author-box-txt"><a
+                                                                        href="{{ $bottom->path() }}">
+                                                                        {{ $bottom->title }}
+                                                                    </a></div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
+
+
+                                    @if(isset($specifics) && !empty($specifics) && count($specifics) > 0)
+
+                                        <div class="sidebar-box">
+                                            <div class="column-header"><span class="bullet"></span>
+                                                <p><b>@lang('site.specifics')</b></p>
+                                            </div>
+                                            <div class="sidebar-axenan">
+                                                <div class="list_post">
+                                                    <ul>
+                                                        @foreach($specifics as $special)
+                                                            <li>
+                                                                <div class="list_post_contin">
+                                                                    <h2>
+                                                                        <a href="{{ $special->path() }}">
+
+                                                                            {{ $special->title }}
+                                                                        </a>
+                                                                    </h2>
+                                                                    <time>{{ $special->timeHandler() }}</time>
+                                                                </div>
+                                                            </li>
+                                                        @endforeach
+
+
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img
+                                                src="{{ url('taj-theme') }}/assets/img/ads-1.png"></a></div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.col-md-4-->
+                </div>
+                <!--/.row-->
+            </div>
+            <!--/.col-md-10-->
+            <!--<div class="col-md-2 ads">-->
+            <!--    <section id="ads">-->
+            <!--        <div class="all_ads"><a href="http://aftab.demo-qaleb.ir/" target="_blank" rel="nofollow"><img-->
+            <!--                    src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>-->
+            <!--        <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img-->
+            <!--                    src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>-->
+            <!--        <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img-->
+            <!--                    src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>-->
+            <!--    </section>-->
+            <!--</div>-->
+        </div>
+        <!--/.row#content-->
+    </div>
+    <!--/.container-->
+@endsection

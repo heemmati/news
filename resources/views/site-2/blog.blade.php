@@ -7,8 +7,8 @@
 
     <meta http-equiv="content-language" content="fa" />
     <meta name="dc.publisher" content="@lang('site.seo_archive_page')" />
-    <meta name="dc.identifier" content="https://www.sahandpress.ir" />
-    <meta name="copyright" content="©2021 Sahandpress Agency (www.sahandpress.ir)" />
+    <meta name="dc.identifier" content="https://www.techli.ir" />
+    <meta name="copyright" content="©2021 techli Agency (www.techli.ir)" />
     <meta itemprop="inLanguage" content="fa" />
     <meta itemprop="name" content="@lang('site.seo_archive_page')" />
     
