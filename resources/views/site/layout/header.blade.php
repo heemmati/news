@@ -50,15 +50,15 @@
 
 
 
-                    <li class="menu-item menu-item-type-taxonomy menu-item-object-media_category menu-item-has-children ">
-                        <a
-                            href="{{ route('site.videos') }}">فیلم</a>
+{{--                    <li class="menu-item menu-item-type-taxonomy menu-item-object-media_category menu-item-has-children ">--}}
+{{--                        <a--}}
+{{--                            href="{{ route('site.videos') }}">فیلم</a>--}}
 
-                    </li>
+{{--                    </li>--}}
 
-                    <li><a href="{{ route('site.images') }}">
-                           عکس
-                        </a></li>
+{{--                    <li><a href="{{ route('site.images') }}">--}}
+{{--                           عکس--}}
+{{--                        </a></li>--}}
 
 
                     <li><a href="{{ route('site.about') }}">درباره
