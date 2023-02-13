@@ -16,9 +16,9 @@
     type="image/png">
     @endif
 
-    <link rel="stylesheet" href="{{ url('z-theme') }}/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="{{ url('z-theme') }}/style.css"/>
-    <link rel="stylesheet" href="{{ url('z-theme') }}/css/login.css"/>
+    <link rel="stylesheet" href="{{ url('site-theme') }}/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{ url('site-theme') }}/style.css"/>
+    <link rel="stylesheet" href="{{ url('site-theme') }}/css/login.css"/>
 
 
 
