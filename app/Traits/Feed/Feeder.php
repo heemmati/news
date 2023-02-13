@@ -43,182 +43,165 @@ use App\services\GoogleTranslate;
 trait Feeder
 {
 
-use CategoryHelper, ImageUploader, ImageHelper, RegionHelper;
+    use CategoryHelper, ImageUploader, ImageHelper, RegionHelper;
 
-       public function fillFeed($feed)
+    public function fillFeed($feed)
     {
-  
-       try{
-        if ($feed->type == \App\Utility\Feed\Feed::MANUAL) {
 
-            $link_pattern =  $feed->link_pattern;
-            $opts = array('http' => array('header' => "User-Agent:MyAgent/1.0\r\n" ,   'ssl'=>array(
-        'verify_peer'=>false,
-        'verify_peer_name'=>false,
-    )));        $context = stream_context_create($opts);
+        try {
+            if ($feed->type == \App\Utility\Feed\Feed::MANUAL) {
 
-          
-            $homepage = $this->get_web_page($feed->link_class);
-            //$homepage = html_entity_decode($homepage);
-
-            $doc = new \DOMDocument('1.0', 'UTF-8');
-            @$doc->loadHTML('<?xml encoding="utf-8" ?>' . $homepage['content']);
-            
+                $link_pattern = $feed->link_pattern;
+                $opts = array('http' => array('header' => "User-Agent:MyAgent/1.0\r\n", 'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                )));
+                $context = stream_context_create($opts);
 
 
+                $homepage = $this->get_web_page($feed->link_class);
+                //$homepage = html_entity_decode($homepage);
 
-            $items = $doc->getElementsByTagName('item');
-
-            if (isset($items) && !empty($items) && count($items) > 0) {
-
-                foreach ($items as $key => $item) {
+                $doc = new \DOMDocument('1.0', 'UTF-8');
+                @$doc->loadHTML('<?xml encoding="utf-8" ?>' . $homepage['content']);
 
 
-                    $title = $item->getElementsByTagName('title');
+                $items = $doc->getElementsByTagName('item');
 
-                    $title = $this->DOMinnerHTML($title[0]);
-                    $title = trim($title);
+                if (isset($items) && !empty($items) && count($items) > 0) {
 
-                    $base = Base::where('title', $title)->first();
-                    
-                    if (!isset($base) || empty($base)) {
-                        
-                        $links = $item->getElementsByTagName('link');
+                    foreach ($items as $key => $item) {
 
-                        if (isset($links) && !empty($links) && count($links) > 0) {
-                            $link = $links[0]->nextSibling->data;
-                            $link = trim($link);
-                            $this->store_from_link($feed, $link);
+
+                        $title = $item->getElementsByTagName('title');
+
+                        $title = $this->DOMinnerHTML($title[0]);
+                        $title = trim($title);
+
+                        $base = Base::where('title', $title)->first();
+
+                        if (!isset($base) || empty($base)) {
+
+                            $links = $item->getElementsByTagName('link');
+
+                            if (isset($links) && !empty($links) && count($links) > 0) {
+                                $link = $links[0]->nextSibling->data;
+                                $link = trim($link);
+                                $this->store_from_link($feed, $link);
+
+
+                            }
+                        }
+
+
+                    }
+
+
+                } else {
+
+                    $links = $doc->getElementsByTagName('a');
+
+
+                    $parse = parse_url($feed->link_class);
+                    $domain = $parse['host'];
+
+
+                    // $xpath = new DOMXPath($doc);
+                    // $arr = array();
+                    // $links = $xpath->query('//a[contains(@href, "' . $domain . '")]');
+
+                    $links2 = array();
+                    foreach ($links as $kelid => $link) {
+                        $link2 = $this->rel2abs($link->getAttribute("href"), 'https://' . $domain);
+                        array_push($links2, $link2);
+
+                    }
+
+
+                    if (count($links2) > 0) {
+                        $counter = 0;
+                        foreach (array_unique($links2) as $kelid4 => $link3) {
+
+
+                            if ($counter < 1000) {
+                                $uses_can = 0;
+
+
+                                if (isset($link_pattern) && !empty($link_pattern)) {
+                                    if (str_contains($link3, $link_pattern)) {
+                                        $uses_can = 1;
+
+                                    }
+                                } else {
+                                    if (str_contains($link3, $domain)) {
+                                        $uses_can = 1;
+
+
+                                    }
+                                }
+
+
+                                if ($uses_can) {
+
+                                    $counter++;
+
+
+                                    $this->store_from_link($feed, $link3);
+                                }
+                            }
 
 
                         }
+
+
+                    }
+
+
+                }
+
+            } else {
+
+
+                $homepage = file_get_contents('https://ftr.fivefilters.net/makefulltextfeed.php?step=3&fulltext=1&url=' . $feed->link_class . '&max=3&links=remove&exc=&submit=Create+Feed');
+                //$homepage = file_get_contents('https://www.freefullrss.com/feed.php?url=' . $feed->link_class . '&max=10');
+
+                $homepage = html_entity_decode($homepage);
+                $doc = new \DOMDocument('1.0', 'UTF-8');
+
+
+                @$doc->loadHTML($homepage);
+
+                $items = $doc->getElementsByTagName('item');
+
+                if (isset($items) && !empty($items) && count($items) > 0) {
+
+                    foreach ($items as $key => $item) {
+
+                        $title = $item->getElementsByTagName('title');
+                        $title = $this->DOMinnerHTML($title[0]);
+                        $description = $item->getElementsByTagName('description');
+                        $images = $item->getElementsByTagName('img');
+
+                        $body = $this->DOMinnerHTML($description[0]);
+
+                        $this->set_new($feed, trim($title), $body, $images);
+
+
                     }
 
 
                 }
 
 
-            } 
-            else {
-                
-                $links = $doc->getElementsByTagName('a');
-
-
- 
-                $parse = parse_url($feed->link_class);
-                $domain = $parse['host'];
-
-
-                // $xpath = new DOMXPath($doc);
-                // $arr = array();
-                // $links = $xpath->query('//a[contains(@href, "' . $domain . '")]');
-
-$links2 = array();
-     foreach ($links as $kelid => $link) {
-          $link2 = $this->rel2abs($link->getAttribute("href") , 'https://'.$domain );
-          array_push($links2,$link2);
-          
-     }
-     
-
-
-if(count($links2) > 0 ) {
-     $counter = 0;        
-                foreach (array_unique($links2) as $kelid4 => $link3) {
-                    
-                    
-                    
-                    
-                    if($counter < 1000){
-                        $uses_can = 0; 
-                
-
-if(isset($link_pattern) && !empty($link_pattern)){
-        if(str_contains($link3, $link_pattern)){
-     $uses_can = 1;
-
-}   
-}
-else{
-  if(str_contains($link3, $domain)){
-     $uses_can = 1;
-
-                  
-} 
-}
-
-
-
-
-if($uses_can){
-        
-    $counter++;
-               
-
-
-  $this->store_from_link($feed, $link3); 
-}
-                    }
-
-
-
-
-
-
-                }
-              
-
-}
-           
-
             }
+        } catch (\Exception $e) {
 
-        } 
-        else {
+        }
 
-
-             $homepage = file_get_contents('https://ftr.fivefilters.net/makefulltextfeed.php?step=3&fulltext=1&url='. $feed->link_class .'&max=3&links=remove&exc=&submit=Create+Feed');
-            //$homepage = file_get_contents('https://www.freefullrss.com/feed.php?url=' . $feed->link_class . '&max=10');
-
-            $homepage = html_entity_decode($homepage);
-            $doc = new \DOMDocument('1.0', 'UTF-8');
-
-
-            @$doc->loadHTML($homepage);
-
-            $items = $doc->getElementsByTagName('item');
-
-            if (isset($items) && !empty($items) && count($items) > 0) {
-
-                foreach ($items as $key => $item) {
-
-                    $title = $item->getElementsByTagName('title');
-                    $title = $this->DOMinnerHTML($title[0]);
-                    $description = $item->getElementsByTagName('description');
-                    $images = $item->getElementsByTagName('img');
-
-                    $body = $this->DOMinnerHTML($description[0]);
-
-                    $this->set_new($feed, trim($title), $body, $images);
-
-
-                }
-
-
-            }
-
-
-        }  
-       }
-       catch(\Exception $e){
-           
-       }
-        
-  
 
     }
 
-     public function DOMinnerHTML($element)
+    public function DOMinnerHTML($element)
     {
         $innerHTML = "";
         $children = $element->childNodes;
@@ -302,578 +285,517 @@ if($uses_can){
         return false;
     }
 
-      public function set_new($feed, $title = null, $body = null, $images = null)
+    public function set_new($feed, $title = null, $body = null, $images = null)
     {
-        
-     
-                       if (isset($title) && !empty($title) && strlen($title) < 255) {
-                           $e2title = $title;
-                            $title = $title . '|' . __('site.site_name_title');
-            $base = Base::where('title', $title)->orWhere('title' , $e2title)->orWhere('title' , 'LIKE' , '%' . $e2title . '%')->first();
-            
-            if(!isset($base) || empty($base)){
+
+
+        if (isset($title) && !empty($title) && strlen($title) < 255) {
+            $e2title = $title;
+            $title = $title . '|' . __('site.site_name_title');
+            $base = Base::where('title', $title)->orWhere('title', $e2title)->orWhere('title', 'LIKE', '%' . $e2title . '%')->first();
+
+            if (!isset($base) || empty($base)) {
                 $parse = parse_url($feed->link_class);
                 $domain = $parse['host'];
-                
-                if ( !empty($body) && strlen($body) <= 65000) {
 
-                if(isset($images) && !empty($images) && count($images) > 0){
-               
-          if (isset($images[0]) && !empty($images[0])) {   
-              
-                    $src = $images[0]->getAttribute('src');
-                    $src = explode("?",$src);
-           $src = $src[0]; 
-                    if (preg_match('/(\.jpg|\.png|\.webp)$/', $src)) {
-                        $src = $this->rel2abs($src , 'https://'.$domain );
-                        $src = $this->imageUploadExternalLink($src);
-                       
-                       
-                        $image = Image::create([
-                            'user_id' => 1,
-                            'title' => $title,
-                            'alt' => $title,
-                            'src' => $src,
-                        ]);
+                if (!empty($body) && strlen($body) <= 65000) {
+
+                    if (isset($images) && !empty($images) && count($images) > 0) {
+
+                        if (isset($images[0]) && !empty($images[0])) {
+
+                            $src = $images[0]->getAttribute('src');
+                            $src = explode("?", $src);
+                            $src = $src[0];
+                            if (preg_match('/(\.jpg|\.png|\.webp)$/', $src)) {
+                                $src = $this->rel2abs($src, 'https://' . $domain);
+                                $src = $this->imageUploadExternalLink($src);
+
+
+                                $image = Image::create([
+                                    'user_id' => 1,
+                                    'title' => $title,
+                                    'alt' => $title,
+                                    'src' => $src,
+                                ]);
+                            }
+                        }
+                        // if (isset($image[1]) && !empty($image[1])) {
+
+                        //     $src = $images[1]->getAttribute('src');
+                        //           $src = $this->rel2abs($src , 'https://'.$domain );
+                        //     if (preg_match('/(\.jpg|\.png|\.webp)$/', $src)) {
+                        //         $image2 = $src;
+                        //     }
+                        // } else {
+                        //     $image2 = null;
+                        // }
+
+
+                    } else {
+                        $image2 = null;
+                        $image = null;
                     }
-                }
-                // if (isset($image[1]) && !empty($image[1])) {
-                    
-                //     $src = $images[1]->getAttribute('src');
-                //           $src = $this->rel2abs($src , 'https://'.$domain );
-                //     if (preg_match('/(\.jpg|\.png|\.webp)$/', $src)) {
-                //         $image2 = $src;
-                //     }
-                // } else {
-                //     $image2 = null;
-                // }
-
-  
-         
-}
-else{
-    $image2 = null;
-    $image = null;
-}
 
 
+                    $ispos = $this->getpositions();
 
 
-                $ispos = $this->getpositions();
-
-          
-
-                $data = [
-                    'head_title' => null,
-                    'footer_title' => null,
-                    'creator_id' => 1,
-                    'updator_id' => null,
-                    'origin_id' => null,
-                    'isimpo' => $ispos['isimpo'],
-                    'isspe' => $ispos['isspe'],
-                    'isnote' => $ispos['isnote'],
-                    'isbig' => $ispos['isbig'],
-                    'isbot' => $ispos['isbot'],
-                    'isrep' => $ispos['isrep'],
-                    'type' => rand(1,3),
-                    'origin_type' => null,
-                    'src' => $feed->title . ' | ' . $domain ,
-                    'external_link' => null,
-                    'image2' => !empty($image) ? !empty($image->src) ? $image->src : '' : '',
-                    'status' => 1,
-                ];
-                
-                
-                $article_rep = new ArticleRepository();
-                $article = $article_rep->store($data);
-                
-              
-                
-                if ($article) {
-               
-
-                    //  Generate Code
-
-                    $article_id = sprintf('%09d', $article->id);
-
-                    $article->update([
-                        'code' => $article_id
-                    ]);
-
-                    $article->save();
-
-      $base_data = [
-                        'title' => $title,
-                        'entitle' => null,
-                        'description' => Str::limit(strip_tags($body), 200),
-                        'short' => Str::random(6),
-                        'body' => $body,
-                        'image' => !empty($image) ? !empty($image->src) ? $image->src : '' : '' ,
-                        'baseable_id' => $article->id,
-                        'baseable_type' => get_class($article),
+                    $data = [
+                        'head_title' => null,
+                        'footer_title' => null,
+                        'creator_id' => 1,
+                        'updator_id' => null,
+                        'origin_id' => null,
+                        'isimpo' => $ispos['isimpo'],
+                        'isspe' => $ispos['isspe'],
+                        'isnote' => $ispos['isnote'],
+                        'isbig' => $ispos['isbig'],
+                        'isbot' => $ispos['isbot'],
+                        'isrep' => $ispos['isrep'],
+                        'type' => rand(1, 3),
+                        'origin_type' => null,
+                        'src' => $feed->title . ' | ' . $domain,
+                        'external_link' => null,
+                        'image2' => !empty($image) ? !empty($image->src) ? $image->src : '' : '',
+                        'status' => 1,
                     ];
 
-                    $base_rep = new \App\Repositories\Base\BaseRepository();
-                    $base = $base_rep->store($base_data);
 
-if($base){
-    
-
-    $producer_data = [
-                        'article_id' => $article->id,
-                        'company' => null,
-                        'company_id' => null,
-                        'author' => null,
-                        'author_id' => null,
-                        'reporter' => null,
-                        'reporter_id' => null,
-                        'photographer' => null,
-                        'photographer_id' => null,
-                        'translator' => null,
-                        'translator_id' => null,
-                        'writer' => null,
-                        'writer_id' => null
-                    ];
-
-                    $producer_repository = new \App\Repositories\News\ArticleProducerRepository();
-                    $article_producer = $producer_repository->store($producer_data);
-
-                    $detail_data = [
-                        'article_id' => $article->id,
-                        'view_count' => 0,
-                        'rate_count' => 0,
-                        'bookmark_count' => 0,
-                        'comment_count' => 0,
-                        'click_count' => 0,
-                    ];
-                    $detail_rep = new ArticleDetailRepository();
-                    $article_detail = $detail_rep->store($detail_data);
+                    $article_rep = new ArticleRepository();
+                    $article = $article_rep->store($data);
 
 
-                    $boolean_data = $this->articlBooleanSet($article);
-                    $boolean_rep = new ArticleBooleanRepository();
-                    $boolean_rep->store($boolean_data);
+                    if ($article) {
 
 
-                    
+                        //  Generate Code
 
-                    $category_ids = $feed->categories()->get()->pluck('id')->toArray();
-                    $category = $this->connect_object_category($article, $category_ids);
+                        $article_id = sprintf('%09d', $article->id);
 
-                    
+                        $article->update([
+                            'code' => $article_id
+                        ]);
+
+                        $article->save();
+
+                        $base_data = [
+                            'title' => $title,
+                            'entitle' => null,
+                            'description' => Str::limit(strip_tags($body), 200),
+                            'short' => Str::random(6),
+                            'body' => $body,
+                            'image' => !empty($image) ? !empty($image->src) ? $image->src : '' : '',
+                            'baseable_id' => $article->id,
+                            'baseable_type' => get_class($article),
+                        ];
+
+                        $base_rep = new \App\Repositories\Base\BaseRepository();
+                        $base = $base_rep->store($base_data);
+
+                        if ($base) {
 
 
-                    $position_rep = new PositionRepository();
-                    $positions = Position::where('type', Article::class)->inRandomOrder()->limit(1)->get()->pluck('id')->toArray();
+                            $producer_data = [
+                                'article_id' => $article->id,
+                                'company' => null,
+                                'company_id' => null,
+                                'author' => null,
+                                'author_id' => null,
+                                'reporter' => null,
+                                'reporter_id' => null,
+                                'photographer' => null,
+                                'photographer_id' => null,
+                                'translator' => null,
+                                'translator_id' => null,
+                                'writer' => null,
+                                'writer_id' => null
+                            ];
 
-                    $position = $position_rep->store_array($article, $positions);
+                            $producer_repository = new \App\Repositories\News\ArticleProducerRepository();
+                            $article_producer = $producer_repository->store($producer_data);
+
+                            $detail_data = [
+                                'article_id' => $article->id,
+                                'view_count' => 0,
+                                'rate_count' => 0,
+                                'bookmark_count' => 0,
+                                'comment_count' => 0,
+                                'click_count' => 0,
+                            ];
+                            $detail_rep = new ArticleDetailRepository();
+                            $article_detail = $detail_rep->store($detail_data);
 
 
-                        
-                        
-}
- else{
-                    DB::rollBack(); 
+                            $boolean_data = $this->articlBooleanSet($article);
+                            $boolean_rep = new ArticleBooleanRepository();
+                            $boolean_rep->store($boolean_data);
+
+
+                            $category_ids = $feed->categories()->get()->pluck('id')->toArray();
+                            $category = $this->connect_object_category($article, $category_ids);
+
+
+                            $position_rep = new PositionRepository();
+                            $positions = Position::where('type', Article::class)->inRandomOrder()->limit(1)->get()->pluck('id')->toArray();
+
+                            $position = $position_rep->store_array($article, $positions);
+
+
+                        } else {
+                            DB::rollBack();
+                        }
+
+
+                    } else {
+                        DB::rollBack();
+                    }
+                } else {
+                    DB::rollBack();
                 }
-
-   
-
-                }
-                else{
-                    DB::rollBack(); 
-                }
-            } 
-                else{
-                    DB::rollBack(); 
-                }    
+            } else {
+                DB::rollBack();
             }
-            
-            else{
-               DB::rollBack(); 
-            }
-           
 
+
+        } else {
+
+            DB::rollBack();
 
         }
-        else{
-          
-          DB::rollBack();            
-  
-        } 
-         
-     
-    }
-
-
-  public function translate($body){
-       
-      
-  
-$text 			= $body;
-$source 		= 'fa';
-$target 		= 'az';
-
-$translation 	= GoogleTranslate::translate($source, $target, $text);
-
-$source 		= 'az';
-$target 		= 'ku';
-
-$translation 	= GoogleTranslate::translate($source, $target, $translation);
-
-$source 		= 'ku';
-$target 		= 'fa';
-
-
-$translation 	= GoogleTranslate::translate($source, $target, $translation);
-
-
-return $translation;
-
 
 
     }
-    
-    
+
+    public function translate($body)
+    {
 
 
-public
-function store_from_link($feed, $link, $titleo = null)
-{
+        $text = $body;
+        $source = 'fa';
+        $target = 'az';
+
+        $translation = GoogleTranslate::translate($source, $target, $text);
+
+        $source = 'az';
+        $target = 'ku';
+
+        $translation = GoogleTranslate::translate($source, $target, $translation);
+
+        $source = 'ku';
+        $target = 'fa';
 
 
+        $translation = GoogleTranslate::translate($source, $target, $translation);
 
 
-    $link = str_replace('%2F', '/', str_replace('%3A', ':', urlencode($link)));
+        return $translation;
 
 
+    }
 
-    $des = $this->get_web_page($link);
+    public function store_from_link($feed, $link, $titleo = null)
+    {
 
 
-    $doc = new \DOMDocument('1.0', 'UTF-8');
-    @$doc->loadHTML('<?xml encoding="utf-8" ?>' . $des['content']);
+        $link = str_replace('%2F', '/', str_replace('%3A', ':', urlencode($link)));
+
+
+        $des = $this->get_web_page($link);
+
+
+        $doc = new \DOMDocument('1.0', 'UTF-8');
+        @$doc->loadHTML('<?xml encoding="utf-8" ?>' . $des['content']);
 
 //                                                 @$doc->loadHTML($link_page);
-    $title_class = $feed->title_class;
-    $description_class = $feed->description_class;
-    $image_class = $feed->image_class;
-    $body_class = $feed->body_class;
-    $image_dom = $feed->image_dom;
-    $striping = $feed->striping;
-    $deleting = $feed->deleting;
+        $title_class = $feed->title_class;
+        $description_class = $feed->description_class;
+        $image_class = $feed->image_class;
+        $body_class = $feed->body_class;
+        $image_dom = $feed->image_dom;
+        $striping = $feed->striping;
+        $deleting = $feed->deleting;
 
 
-    $finder = new DomXPath($doc);
-    
+        $finder = new DomXPath($doc);
 
-    if (isset($body_class) && !empty($body_class)) {
-        $bodys = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $body_class ')]");
-        if (isset($bodys) && !empty($bodys) && count($bodys) > 0) {
-            $body = $this->DOMinnerHTML($bodys[0]);
-            // if(isset($deleting) && !empty($deleting)){
-            //      $deletss = $body->query($deleting);
-            //      foreach($deletss as $delete){
-            //          $delete->parentNode->removeChild($delete);
-            //      }
-            //  }
-         
-            $body = trim($body);
-            
-             if($striping){
-                 $body = strip_tags($body , '<p><h2><h3><h4><h5><h6><table><tr><th><td><span><ul><li><blockquote>');
-             }
- 
-      
-      $body = $body . 'منبع : '.
-            '<a href="'.$link.'">منبع</a>';
-            
-            
-       $body = $this->dictionary($body);
-    //   $body = $this->translate($body);
-    
-      
+
+        if (isset($body_class) && !empty($body_class)) {
+            $bodys = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $body_class ')]");
+            if (isset($bodys) && !empty($bodys) && count($bodys) > 0) {
+                $body = $this->DOMinnerHTML($bodys[0]);
+                // if(isset($deleting) && !empty($deleting)){
+                //      $deletss = $body->query($deleting);
+                //      foreach($deletss as $delete){
+                //          $delete->parentNode->removeChild($delete);
+                //      }
+                //  }
+
+                $body = trim($body);
+
+                if ($striping) {
+                    $body = strip_tags($body, '<p><h2><h3><h4><h5><h6><table><tr><th><td><span><ul><li><blockquote>');
+                }
+
+
+                $body = $body . 'منبع : ' .
+                    '<a href="' . $link . '">منبع</a>';
+
+
+                $body = $this->dictionary($body);
+                //   $body = $this->translate($body);
+
+
+            } else {
+                $body = null;
+            }
         } else {
             $body = null;
         }
-    } 
-    else {
-        $body = null;
-    }
 
 
-
-
-if(isset($body) && !empty($body)){
-    
- 
-    
-    
-     if (isset($title_class) && !empty($title_class)) {
-        $titles = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $title_class ')]");
-        if (isset($titles) && !empty($titles) && count($titles) > 0) {
-            $title = $this->DOMinnerHTML($titles[0]);
-
-            $title = strip_tags($title);
-            $title = trim($title);
-        } else {
-            $title = null;
-        }
-    } else {
-        if (isset($titleo) && !empty($titleo)) {
-            $title = $titleo;
-        } 
-        else {
-           $hs = $doc->getElementsByTagName('h1');
-          if(isset($hs[0]) && !empty($hs[0])){
-             
-           $title = $this->DOMinnerHTML($hs[0]);
-           
-           $title = strip_tags($title);
-         
-          }
-          else{
-             $title = null; 
-          }
-         
-        }
-
-    }
-    
-    
-       
-
-    if (isset($description_class) && !empty($description_class)) {
-        $descriptions = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $description_class ')]");
-        if (isset($descriptions) && !empty($descriptions) && count($descriptions) > 0) {
-            $description = $this->DOMinnerHTML($descriptions[0]);;
-            $description = trim($description);
-        }
-    } else {
         if (isset($body) && !empty($body)) {
-            $description = Str::limit(strip_tags($body), 70);
+
+
+            if (isset($title_class) && !empty($title_class)) {
+                $titles = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $title_class ')]");
+                if (isset($titles) && !empty($titles) && count($titles) > 0) {
+                    $title = $this->DOMinnerHTML($titles[0]);
+
+                    $title = strip_tags($title);
+                    $title = trim($title);
+                } else {
+                    $title = null;
+                }
+            } else {
+                if (isset($titleo) && !empty($titleo)) {
+                    $title = $titleo;
+                } else {
+                    $hs = $doc->getElementsByTagName('h1');
+                    if (isset($hs[0]) && !empty($hs[0])) {
+
+                        $title = $this->DOMinnerHTML($hs[0]);
+
+                        $title = strip_tags($title);
+
+                    } else {
+                        $title = null;
+                    }
+
+                }
+
+            }
+
+
+            if (isset($description_class) && !empty($description_class)) {
+                $descriptions = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $description_class ')]");
+                if (isset($descriptions) && !empty($descriptions) && count($descriptions) > 0) {
+                    $description = $this->DOMinnerHTML($descriptions[0]);;
+                    $description = trim($description);
+                }
+            } else {
+                if (isset($body) && !empty($body)) {
+                    $description = Str::limit(strip_tags($body), 70);
+                } else {
+                    $description = null;
+                }
+
+            }
+
+            if (!isset($image_dom) || empty($image_dom)) {
+
+                if (!isset($image_class) || empty($image_class)) {
+                    $image_class = $body_class;
+                    $images = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $image_class ')]");
+
+                    if (isset($images) && !empty($images) && count($images) > 0) {
+                        $images = $images[0]->getElementsByTagName('img');
+                    } else {
+                        $images = null;
+                    }
+
+
+                } else {
+                    $images = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $image_class ')]");
+                    if (isset($images) && !empty($images) && count($images) > 0) {
+
+                        $images = $images[0]->getElementsByTagName('img');
+
+
+                    } else {
+                        $images = null;
+                    }
+                }
+            } else {
+
+                $images = $finder->query($image_dom);
+
+                if (isset($images) && !empty($images) && count($images) > 0) {
+
+                    $images = $images[0]->getElementsByTagName('img');
+
+                } else {
+                    $image_class = $body_class;
+                    $images = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $image_class ')]");
+
+                    if (isset($images) && !empty($images) && count($images) > 0) {
+                        $images = $images[0]->getElementsByTagName('img');
+                    } else {
+                        $images = null;
+                    }
+                }
+            }
+
+
+            if (isset($title) && !empty($body) && !empty($title)) {
+
+                $this->set_new($feed, trim($title), $body, $images);
+            }
+        }
+
+
+    }
+
+    public function rel2abs($rel, $base)
+    {
+        /* return if already absolute URL */
+        if (parse_url($rel, PHP_URL_SCHEME) != '') return $rel;
+
+        if (!empty($rel[0])) {
+            /* queries and anchors */
+            if ($rel[0] == '#' || $rel[0] == '?') return $base . $rel;
+        }
+
+
+        /* parse base URL and convert to local variables:
+           $scheme, $host, $path */
+        extract(parse_url($base));
+        if (isset($path) === true) {
+            /* remove non-directory element from path */
+            $path = preg_replace('#/[^/]*$#', '', $path);
         } else {
-            $description = null;
+            $path = '';
+        }
+        /* destroy path if relative url points to root */
+        if (!empty($rel[0])) {
+            if ($rel[0] == '/') $path = '';
         }
 
-    }
-    
-    if (!isset($image_dom) || empty($image_dom)) {
+        /* dirty absolute URL */
+        $abs = "$host$path/$rel";
 
-    if (!isset($image_class) || empty($image_class)) {
-        $image_class = $body_class;
-        $images = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $image_class ')]");
-       
-        if (isset($images) && !empty($images) && count($images) > 0) {
-            $images = $images[0]->getElementsByTagName('img');
-        }
-        else{
-            $images = null;
+        /* replace '//' or '/./' or '/foo/../' with '/' */
+        $re = array('#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#');
+        for ($n = 1; $n > 0; $abs = preg_replace($re, '/', $abs, -1, $n)) {
         }
 
-
-    }
-    else{
-         $images = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $image_class ')]");
-            if (isset($images) && !empty($images) && count($images) > 0) {
-           
-            $images = $images[0]->getElementsByTagName('img'); 
-           
-            
-        }
-        else{
-            $images = null;
-        }
-        }
-    }
-    
-    else{
-       
-        $images = $finder->query($image_dom);
-     
-        if (isset($images) && !empty($images) && count($images) > 0) {
-            
-            $images = $images[0]->getElementsByTagName('img');
-          
-        }
-        else{
-            $images = null;
-        }
+        /* absolute URL is ready! */
+        return $scheme . '://' . $abs;
     }
 
+    public function tagging_body($article)
+    {
 
 
-    if (isset($title) && !empty($body) && !empty($title)) {
+        $base = $article->base;
 
-        $this->set_new($feed, trim($title), $body, $images);
+
+        $tags_ids = Tag::latest()->get();
+
+        foreach ($tags_ids as $tagged) {
+
+
+            if (str_contains($base->body, $tagged->title)) {
+                if ($tagged->title != 'سهند') {
+                    $link_tag = '<a href="' . $tagged->path() . '" >' . $tagged->title . '</a>';
+
+                    $new_article = str_replace('' . $tagged->title . '', $link_tag, $base->body);
+                    if ($new_article != $base->body) {
+                        $base->update([
+                            'body' => $new_article
+                        ]);
+
+                        $base->save();
+
+
+                        $article->tags()->attach([$tagged->id]);
+
+                    }
+                }
+            }
+
+
+        }
+
+
+        return true;
     }
-}
 
-   
-
-}
+    public function dictionary($body)
+    {
 
 
-public function rel2abs($rel, $base)
-{
-    /* return if already absolute URL */
-    if (parse_url($rel, PHP_URL_SCHEME) != '') return $rel;
+        $changable = Reword::get();
+        $words = $changable->pluck('word')->toArray();
+        $trans = $changable->pluck('trans')->toArray();
+        $body = str_replace($words, $trans, $body);
 
-if(!empty($rel[0])){
-      /* queries and anchors */
-    if ($rel[0]=='#' || $rel[0]=='?') return $base.$rel;
-}
-  
-
-    /* parse base URL and convert to local variables:
-       $scheme, $host, $path */
-    extract(parse_url($base));
-    if (isset($path) === true){
-    /* remove non-directory element from path */
-    $path = preg_replace('#/[^/]*$#', '', $path);
-}
-else{
-    $path = '';
-}
-    /* destroy path if relative url points to root */
-    if(!empty($rel[0])){
-    if ($rel[0] == '/') $path = '';
+        return $body;
     }
 
-    /* dirty absolute URL */
-    $abs = "$host$path/$rel";
+    public function getpositions()
+    {
 
-    /* replace '//' or '/./' or '/foo/../' with '/' */
-    $re = array('#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#');
-    for($n=1; $n>0; $abs=preg_replace($re, '/', $abs, -1, $n)) {}
-
-    /* absolute URL is ready! */
-    return $scheme.'://'.$abs;
-}
+        $number1 = rand(0, 4);
+        $number2 = rand(0, 4);
+        $number3 = rand(0, 2);
 
 
-public function tagging_body($article){
-    
-  
-  $base = $article->base;
-          
-            
-    $tags_ids = Tag::latest()->get();
-       
-            foreach ($tags_ids as $tagged){
+        $ispos['isimpo'] = 0;
+        $ispos['isspe'] = 0;
+        $ispos['isnote'] = 0;
+        $ispos['isbig'] = 0;
+        $ispos['isrep'] = 0;
+        $ispos['isbot'] = 0;
+
+        if ($number1 <= 1) {
+            $ispos['isimpo'] = 1;
+
+        } elseif ($number1 <= 2 && $number1 > 1) {
+            $ispos['isspe'] = 1;
+        } elseif ($number1 <= 3 && $number1 > 2) {
+            $ispos['isimpo'] = 1;
+        } elseif ($number1 >= 3) {
+            $ispos['isnote'] = 1;
+        } else {
+            $ispos['isimpo'] = 1;
+        }
 
 
-if(str_contains($base->body , $tagged->title )){
-  if( $tagged->title != 'سهند'){
-      $link_tag = '<a href="'.$tagged->path().'" >'.$tagged->title.'</a>';
+        if ($number2 <= 1) {
+            $ispos['isimpo'] = 1;
 
-                               $new_article = str_replace(''.$tagged->title.'' , $link_tag , $base->body);
-                               if ($new_article != $base->body) {
-                                   $base->update([
-                                       'body' => $new_article
-                                   ]);
-
-                                   $base->save();
-
-
-
-                                   $article->tags()->attach([$tagged->id]);
-                                   
-                               }
-}  
-}
+        } elseif ($number2 <= 2 && $number2 > 1) {
+            $ispos['isspe'] = 1;
+        } elseif ($number2 <= 3 && $number2 > 2) {
+            $ispos['isimpo'] = 1;
+        } elseif ($number2 >= 3) {
+            $ispos['isnote'] = 1;
+        } else {
+            $ispos['isnote'] = 1;
+        }
 
 
-           
-                             
+        if ($number3 <= 1) {
+            $ispos['isrep'] = 1;
 
+        } elseif ($number2 > 1) {
+            $ispos['isbot'] = 1;
+        }
 
-                        
+        return $ispos;
 
-                       }
-                       
-                       
-                       
-                       return true;
-}
-
-public function dictionary($body){
-    
-        
-   $changable = Reword::get(); 
-    $words = $changable->pluck('word')->toArray();
-    $trans = $changable->pluck('trans')->toArray();
-     $body = str_replace($words , $trans , $body);
-     
-     return $body;
-}
-
-
-public function getpositions(){
-    
-    $number1 = rand(0,4);
-$number2 = rand(0,4);
-$number3 = rand(0,2);
-
-
-    $ispos['isimpo'] = 0;
-$ispos['isspe'] = 0;
-$ispos['isnote'] = 0;
-$ispos['isbig'] = 0;
- $ispos['isrep'] = 0;
- $ispos['isbot'] = 0;
-
-if($number1 <= 1){
-    $ispos['isimpo'] = 1 ;
-   
-}
-elseif(  $number1 <= 2 &&  $number1 > 1){
-    $ispos['isspe'] = 1 ;
-}
-
-elseif( $number1 <= 3 &&  $number1 > 2){
-    $ispos['isimpo'] = 1 ;
-}
-
-elseif( $number1 >= 3){
-    $ispos['isnote'] = 1 ;
-}
-else{
-    $ispos['isimpo'] = 1 ;
-}
-
-
-if($number2 <= 1){
-    $ispos['isimpo'] = 1 ;
-   
-}
-elseif(  $number2 <= 2 &&  $number2 > 1){
-    $ispos['isspe'] = 1 ;
-}
-
-elseif( $number2 <= 3 &&  $number2 > 2){
-    $ispos['isimpo'] = 1 ;
-}
-
-elseif( $number2 >= 3){
-    $ispos['isnote'] = 1 ;
-}
-else{
-    $ispos['isnote'] = 1 ;
-}
-
-
-if($number3 <= 1){
-    $ispos['isrep'] = 1 ;
-   
-}
-elseif(   $number2 > 1){
-    $ispos['isbot'] = 1 ;
-}
-
-return $ispos;
-
-}
-
+    }
 
 
 }
