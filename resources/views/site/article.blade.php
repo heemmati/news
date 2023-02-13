@@ -4,491 +4,437 @@
 @section('seos')
 
 
-<title>{{ $article->title }}</title>
-    <meta http-equiv="content-language" content="fa" />
-    <meta name="dc.publisher" content="@lang('site.seo_first_page')" />
-    <meta name="dc.identifier" content="https://www.sahandpress.ir" />
-    <meta name="copyright" content="©2021 Sahandpress Agency (www.sahandpress.ir)" />
-    <meta itemprop="inLanguage" content="fa" />
-    <meta itemprop="name" content="{{ $article->title }}" />
-    
-    
-    
+    <title>{{ $article->title }}</title>
+    <meta http-equiv="content-language" content="fa"/>
+    <meta name="dc.publisher" content="@lang('site.seo_first_page')"/>
+    <meta name="dc.identifier" content="https://www.techli.ir"/>
+    <meta name="copyright" content="©2021 techli Agency (www.techli.ir)"/>
+    <meta itemprop="inLanguage" content="fa"/>
+    <meta itemprop="name" content="{{ $article->title }}"/>
 
-    <meta itemprop="description" content="{{ $article->description }}" />
-    <meta itemprop="image" content="{{ Storage::url($article->image) }}" />
-    
+
+
+
+    <meta itemprop="description" content="{{ $article->description }}"/>
+    <meta itemprop="image" content="{{ $article->picture() }}"/>
+
 
     <link rel="alternate" hreflang="fa" href="{{ $article->path() }}"/>
-    <link rel="canonical" href="{{ $article->path() }}" >
-    
+    <link rel="canonical" href="{{ $article->path() }}">
 
-    <meta property="og:title" itemprop="headline" content="{{ $article->title }}" />
-    
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="{{ $article->path() }}" />
-    <meta property="og:description" itemprop="description" content="{{ $article->description }}" />
-    <meta property="og:site_name" content="@lang('site.seo_first_page')" />
-    <meta property="og:locale" content="fa_IR" />
-    <meta property="og:article:author" content="@lang('site.seo_first_page')" />
+
+    <meta property="og:title" itemprop="headline" content="{{ $article->title }}"/>
+
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="{{ $article->path() }}"/>
+    <meta property="og:description" itemprop="description" content="{{ $article->description }}"/>
+    <meta property="og:site_name" content="@lang('site.seo_first_page')"/>
+    <meta property="og:locale" content="fa_IR"/>
+    <meta property="og:article:author" content="@lang('site.seo_first_page')"/>
     <!--<meta property="og:article:section" content="@if(isset($article->categories) && !empty($article->categories))-->
     <!--                        @foreach ($article->categories as $category)-->
     <!--                            <a href="{{ $category->path() }}">{{ $category->title }}</a>-->
     <!--                                           @endforeach-->
 
     <!--                    @endif" />-->
-    <meta property="og:image" itemprop="image" content="{{ Storage::url($article->image) }}" />
+    <meta property="og:image" itemprop="image" content="{{ $article->picture() }}"/>
 
-    <meta name="twitter:card" content="article" />
+    <meta name="twitter:card" content="article"/>
     <!--<meta name="twitter:site" content="@FarsNews_Agency" />-->
-    <meta name="twitter:title" content="{{ $article->title }}" />
+    <meta name="twitter:title" content="{{ $article->title }}"/>
     <meta name="twitter:description" content="{{ $article->description }}"/>
-    <meta name="twitter:image" content="{{ Storage::url($article->image) }}" />
+    <meta name="twitter:image" content="{{ $article->picture() }}"/>
 
-    <meta itemprop="datePublished" property="article:published_time" content="{{ $article->created_at }}" />
-    <meta itemprop="dateModified" property="article:modified" content="{{ !empty($article->updated_at) ? $article->updated_at  : $article->created_at }}" />
-    <meta name="thumbnail" itemprop="thumbnailUrl" content="{{ Storage::url($article->image) }}" />
-    <meta name="genre" itemprop="genre" content="News" />
- @if(isset($article->tags) && !empty($article->tags) && count($article->tags) > 0 )
+    <meta itemprop="datePublished" property="article:published_time" content="{{ $article->created_at }}"/>
+    <meta itemprop="dateModified" property="article:modified"
+          content="{{ !empty($article->updated_at) ? $article->updated_at  : $article->created_at }}"/>
+    <meta name="thumbnail" itemprop="thumbnailUrl" content="{{ $article->picture() }}"/>
+    <meta name="genre" itemprop="genre" content="News"/>
+    @if(isset($article->tags) && !empty($article->tags) && count($article->tags) > 0 )
 
-    <meta name="keywords" content="@foreach($article->tags as $key => $tag){{ $tag->title }}{{ $key+1!=count($article->tags)?',':''}}@endforeach"/>
+        <meta name="keywords"
+              content="@foreach($article->tags as $key => $tag){{ $tag->title }}{{ $key+1!=count($article->tags)?',':''}}@endforeach"/>
     @endif
-    <meta name="description" content="{{ $article->description }}" />
+    <meta name="description" content="{{ $article->description }}"/>
     <!--<meta name="dc.Date" scheme="ISO8601" content="8/11/2021 10:12:53 AM" />-->
     <meta name="dc.identifier"
-          content="{{ $article->path() }}" />
+          content="{{ $article->path() }}"/>
     <!--<meta name="Fna.oid" content="14000520000162" />-->
 
 
 
-<script type="application/ld+json">
+    <script type="application/ld+json">
 {
    "@context": "https://schema.org",
    "@type": "NewsArticle",
    "url": "{{ url($article->path()) }}",
    "publisher":{
       "@type":"Organization",
-      "name":"Sahandpress",
-      "logo":"https://www.sahandpress.ir/storage//photos/1/Sahandpressw.png"
+      "name":"techli",
+      "logo":"https://www.techli.ir/storage//photos/1/Sahandpressw.png"
    },
    "headline": "{{ $article->title }}",
    "mainEntityOfPage": "{{ url($article->path()) }}",
    "articleBody": "{{ $article->description }}",
- 
+
    "image":[  @if(isset($article->image) && !empty($article->image))
-      "{{ Storage::url($article->image) }}"
+            "{{ $article->picture() }}"
       @else
-      "https://sahandpress.ir/site-theme/images/inten/default-image.png"
- @endif
-   ],
-  
-   "datePublished":"{{ $article->created_at }}"
+            "https://techli.ir/site-theme/images/inten/default-image.png"
+@endif
+        ],
+
+        "datePublished":"{{ $article->created_at }}"
 }
-</script>
+
+
+
+
+    </script>
 
 
 @endsection
 
 @section('content')
 
+    <div class="container">
+        <div class="breadcrumb">
+            <div class="breadcrumb-title">شما اینجا هستید :</div>
+            <ul>
+                <li><a href="{{ url('/') }}" title="@lang('site.site_name')">صفحه اصلی</a></li>
+                @if(isset($article->categories) && !empty($article->categories))
+                    <li>
 
-    <section id="news-page-top">
-        <div class="container">
-
-            <div class=" row">
-                <div class="col-xs-12 col-sm-2">
-                    <div class="news-code">
-                        <span
-                            class="news_nav_title"> 				                     کد خبر:                  			</span>
-                        <span class="news_number">
-                        {{ $article->code }}
-                    </span>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                    <div class="news_home_link">
-                        <i class="fa fa-link" aria-hidden="true"></i>
-                        <span>لینک کوتاه:</span>
-
-                        <a href="{{ url('/' . $article->short ) }}" class="link_en" target="_blank"
-                           rel="nofollow">{{ url('/' . $article->short ) }}</a>
-
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-4">
-                     <div class="date-news">
-                       
-                  </span>
-
-
-                    </div>
-                    <div class="date-news">
-                        <ul>
-                            <li>
-                                 <i class="fa fa-eye"></i>
-                        <span class="news_nav_title">بازدید: </span>
-                        <span>
-                                       {{ $view }}
-                                </li>
-                                <li> 
-                                <i class="fa fa-calendar"></i>
-                        <span class="news_nav_title">تاریخ انتشار: </span>
-                        <span>
-                                       {{ $article->timeHandler() }}
-                  </span>
-                                 </li>    
-                            </ul>
-                       
-
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-            <div class="row border-news">
-                
-                <div class="col-xs-12 col-sm-8">
-                    <div class="news_path">
-                        <ul>
-                            <li>
-                                <a href="{{ url('/') }}">صفحه اصلی</a>   <span>      <i class="fas fa-chevron-left"></i>    </span>
-                            </li>
-                              @if(isset($article->categories) && !empty($article->categories))
-                            <li>
-                               
-                            @foreach ($article->categories as $red => $category)
+                        @foreach ($article->categories as $red => $category)
                             @if($red == 0)
                                 <a href="{{ $category->path() }}">{{ $category->title }}</a>
-                       <span><i class="fas fa-chevron-left"></i>  </span> 
-@endif
-                            @endforeach
 
-                       
-                            </li>
-                             @endif
-                             <li>
-                                  <a class="bold_bread" href="#">{{ $article->title }}</a> 
-                                  </li>
-                            </ul>
-                        
-                       
-                        
-                           
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-4 ">
-                    <ul class="ul-news ">
-                        <li>
-                            <div title="نسخه چاپی" class="news_print_botton"><a href="javascript:void(0)" id="print"><i
-                                        class="fa fa-print"></i></a></div>
-                        </li>
-                        <li>
-                            <div title="ارسال به دوستان" class="news_emails_botton" onclick=""><a
-                                    href="mailto:?subject={{ $article->title }}&amp;body={{ $article->path() }}"><i
-                                        class="fas fa-envelope"></i></a></div>
-                        </li>
-                        <li><a title="ذخیره" class="news_save_botton" href=""> <i class="fas fa-save"></i></a></li>
-                        <li><a class="sn_telegram" href="https://t.me/share/url?url={{ url($article->path()) }}"><i
-                                    class="far fa-paper-plane"></i></a></li>
-                          <li><a class="sn_telegram" href="whatsapp://send?text={{ url($article->path()) }}"><i
-                                    class="fab fa-whatsapp"></i></a></li>
-                            <li><a class="sn_telegram" href="https://twitter.com/intent/tweet?text={{ url($article->path()) }}"><i
-                                    class="fab fa-twitter"></i></a></li>
-                                              
-                                   <li><a class="sn_telegram" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url($article->path()) }}&amp;title={{ $article->title }}&amp;source={{ url('/') }}"><i
-                                    class="fab fa-linkedin"></i></a></li>     
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="news-page">
-        <div class="container">
-
-            <div class=" row">
-                <!--                <div class="col-xs-12 col-sm-1 hidden-xs">
-                                    <div class="adv-news"></div>
-                                </div>-->
-
-   <div class="col-md-25">
-                    
-                     
-                           @if(isset($most_viewed) && !empty($most_viewed))
-                                <div class="box3">
-                                    <h3 class="title title-box">
-                             <span>
-                       پربازدیدترین اخبار
-                         </span>
-                                    </h3>
-
-                                    <div class="item-box1">
-                                        @foreach ($most_viewed as $new )
-
-                                            <div class="item4">
-                                                <div class="title1">
-                                                    <h5><a href="{{  $new->article->path() }}"> <i class="fas fa-caret-left"></i><span>  {{  $new->article->title  }}</span></a>
-                                                    </h5>
-                                                </div>
-                                            </div>
-
-                                        @endforeach
-
-
-                                        <div class="all-div"><a href="{{ route('site.blog') }}" class="all-btn" style=" background: #012b81; color: white;">
-                                                آرشیو
-                                            </a></div>
-
-                                    </div>
-                                </div>
-                            @endif  
-                            
-                </div>
-                <div class="col-md-75">
-                    <div id="main1" class="news-bor">
-                        <h3 class="title-main">
-
-                        </h3>
-
-                        <div class="row boder4-xs">
-                          
-                            <div class="col-md-12">
-                                <div class="row">
-                                  
-                                    <div class="col-md-4">
-                                        <x-site.tools.image :image="$article"
-                                                            class="bg-movei-lnk"></x-site.tools.image>
-                                    </div>
-                                    <div class="col-md-8">
-<h5 class="head_title" style="color:#012b81;">{{ $article->head_title }}</h5>
-                                        <h1 itemprop="headline" class="main_titlee">
-                                            <a href="{{ $article->path() }}" style="color: #012b81;">
-                                                {{ $article->title }}
-                                            </a>
-                                        </h1>
-                                        <p  itemprop="description" class="summary-text">
-                                            {{ $article->description }}
-                                        </p>
-                                            <x-site.widget.like :id="$article->id" :type="get_class($article)"></x-site.widget.like>
-
-                                          
-
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-                         
-
-
-
-                        </div>
-                        <br>
-                        <br>
-                        <div class=" boder4-xs">
-                            <div class="col-md-12 box-content">
-<div itemprop="articleBody">
-                                @if (isset($article->image2) && !empty($article->image2))
-                                    <img class="big_main"
-                                         src="{{ \Illuminate\Support\Facades\Storage::url($article->image2) }}"
-                                         alt="{{ $article->title }}">
-
-                                @endif
-
-                               @if(isset($similars_tags) && !empty($similars_tags) && count($similars_tags) > 0 )
-                                            @php
-                                            $dom = new DOMDocument();
-                                             @ $dom->loadHTML( '<?xml encoding="utf-8" ?>' . $article->body);
-
-                                        $documentElement = $dom->documentElement;
-
-$p = $dom->getElementsByTagName('p');
-
-
-$i =0;
-
-foreach ($p as $key => $item){
-
-
-if (fmod($key ,5) == 0){
-
-if (isset($similars_tags[$i]) && !empty($similars_tags[$i]) &&  !empty($similars_tags[$i]->title) && isset($similars_tags[$i]->title) ) {
-
-
-
-
-
-@  $html_to_add = '<div class="between_links">
-بیشتر بخوانید :
-<a href="'.$similars_tags[$i]->path().'">'.$similars_tags[$i]->title.'</a></div>';
-
-
-$dom_to_add = new DOMDocument();
-$dom_to_add->loadHTML('<?xml encoding="utf-8" ?>' .$html_to_add);
-$new_element = $dom_to_add->documentElement;
-
-$imported_element = $dom->importNode($new_element, true);
-$item->parentNode->insertBefore($imported_element, $item->nextSibling);
-
-$i++;
-
-}
-else{
-break;
-}
-}
-
-
-
-}
-@  $output = $dom->saveHTML();
-
-echo $output;
-
-
-                                        @endphp
-
-                                            @else
-                                            {!! $article->body !!}
-
-                                            @endif
-
-
-
-                            </div>
-
-                            @if (isset($article->videos[0]) && !empty($article->videos[0]))
-                                <div class="video_article">
-                                    <video controls>
-                                        <source
-                                            src="{{ \Illuminate\Support\Facades\Storage::url($article->videos[0]->src) }}"
-                                            type="video/mp4">
-
-                                    </video>
-                                </div>
                             @endif
-</div>
-                            <div class="row">
-                                @if(isset($article->tags) && !empty($article->tags) && count($article->tags) > 0 )
-                                    <div class="col-md-12 labels">
-                                        <ul>
-                                            <li>
-                                                <label> <i class="fa fa-tags"></i> برچسب ها : </label>
+                        @endforeach
+
+
+                    </li>
+                @endif
+
+                <li>{{ $article->title }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row" id="content">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8 middl">
+                        <section class="single">
+                            <div id="lin-10"></div>
+                            <header>
+                                @if(isset($article->head_title) && !empty($article->head_title))
+                                <small class=" text-muted"><i class="fa fa-stop" aria-hidden="true"></i>
+                                    {{ $article->head_title }}
+                                </small><br>
+                                @endif
+                                <h1 class="single-post-title">
+                                    <a href="{{ $article->path() }}">
+                                        {{ $article->title }}
+                                    </a></h1>
+                                <div class="meta-right">
+                                    <i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;
+                                    <a rel="nofollow" class="send_file left"
+                                       href="mailto:?subject={{ $article->path() }}"
+                                       title="ارسال  : {{ $article->title }}">ارسال
+                                    </a></div>
+                                <a class="print" href="#"
+                                   onclick='window.open("{{ $article->path() }}?print=1", "printwin","left=200,top=200,width=820,height=550,toolbar=1,resizable=0,status=0,scrollbars=1");'><i
+                                        class="fa fa-print" aria-hidden="true"></i>&nbsp; پرینت</a><br>
+                            </header>
+                            <div class="single-thumb">
+                                <a href="{{ $article->picture() }}">
+                                    <img
+                                        width="620" height="410"
+                                        src="{{ $article->picture() }}"
+                                        alt="{{ $article->title }}"
+                                        title="{{ $article->title }}"/></a>
+                            </div>
+                            <header>
+                                <span>
+                                    شناسه خبر : {{ $article->code }} 
+                                     </span>
+                                      <span>
+                                     تاریخ انتشار : {{ $article->timeHandler() }}
+                                      </span>
+                                      <span>
+                                     {{ $view  }} بازدید
+                                      </span>
+
+                                   
+                            </header>
+                            <div class="post-content clearfix">
+
+                                <div class="lead">
+                                    {{ $article->description }}
+                                </div>
+
+
+                                <div class="full-text">
+                                    @if(isset($content) && !empty($content))
+                                    {!! $content !!}
+                                    @else
+                                    {!! $article->body !!}
+                                    @endif
+                                </div>
+                             
+
+
+
+
+                                <div class="page-bottom">
+                                    <div class="bottom-social">
+                                        <span><b><i class="fa fa-share-alt" aria-hidden="true"></i></b> به اشتراک
+                                            بگذارید : </span>
+                                        <ul class="single-social">
+                                            <li class="telegram"><a target="_blank"
+                                                                    href="https://telegram.me/share/url?url={{ $article->path() }}"></a>
                                             </li>
-
-                                            @foreach($article->tags as $tag)
-
-                                                <li class="tag">
-                                                    <span><a href="{{ $tag->path() }}">{{ $tag->title }}</a></span>
-                                                </li>
-
-                                            @endforeach
-
-
+                                            <li class="facebook"><a target="_blank"
+                                                                    href="http://www.facebook.com/sharer/sharer.php?u={{ $article->path() }}"></a>
+                                            </li>
+                                            <li class="twitter"><a target="_blank"
+                                                                   href="http://twitter.com/home?status={{ $article->path() }}"></a>
+                                            </li>
+                  
+                                            <li class="linkedin"><a target="_blank"
+                                                                    href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{ $article->path() }}"></a>
+                                            </li>
                                         </ul>
                                     </div>
-                                @endif
+                                    <div class="report">
+                                        <div class="page-bottom-link">
+                                            <i class="fa fa-link"></i>
+                                            <div class="page-bottom-link-text" id="permalink">
+                                                {{ url('/' . $article->short ) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            
-                               @if(isset($similars) && !empty($similars))
-                                <div class="box3">
-                                    <h3 class="title title-box">
-                             <span>
-                        اخبار مشابه
-                         </span>
-                                    </h3>
+                            <div class="box-header">
+                                <b>برچسب ها </b>
+                            </div>
 
-                                    <div class="item-box1">
-                                        @foreach ($similars as $new )
-
-                                            <div class="item4">
-                                                <div class="title1">
-                                                    <h5><a href="{{  $new->path() }}"> <i class="fas fa-caret-left"></i><span>  {{  $new->title  }}</span></a>
-                                                    </h5>
-                                                </div>
-                                            </div>
-
-                                        @endforeach
-
-
-                                        <div class="all-div"><a href="{{ route('site.blog') }}" class="all-btn" style=" background: #012b81; color: white;">
-                                                آرشیو
-                                            </a></div>
-
+                            <div class="tag">
+                                @foreach($article->tags as $tag)
+                                    <a
+                                        href="{{ $tag->path() }}"
+                                        rel="tag">{{ $tag->title }}</a>
+                                @endforeach
+                            </div>
+                            <div id="lin-10"></div>
+                            <div class="ads"><a href="#"> <img src="{{ url('taj-theme') }}/assets/img/ads.png" width="100%" height="90"
+                                                               alt=""/>
+                                </a>
+                                <p></p>
+                            </div>
+                            <div class="box-header">
+                                <b>اخبار مشابه</b>
+                            </div>
+                            @foreach($similars as $similar)
+                                <div class="index-relate-post">
+                                    <div class="index-relate-post-txt"><a
+                                            href="{{ $similar->path() }}"><i
+                                                class="fa fa-stop" aria-hidden="true"></i>
+                                            {{ $similar->title }}
+                                        </a>
+                                        <time> {{ $similar->timeHandler() }}</time>
                                     </div>
                                 </div>
-                            @endif
-                            
-                            
-                            
-                            
-                            <br>
+                        @endforeach
+                        <!---->
 
-                            @if(1)
-                            <!--End Similar post -->
-                                <x-site.news.comments :comments="$comments" :object="$article"></x-site.news.comments>
-                            @endif
+                            <div class="separator"></div>
+                            <div class="ads"><a href="#"> <img src="{{ url('taj-theme') }}/assets/img/ads.png" width="100%" height="90"
+                                                               alt=""/>
+                                </a></div>
+                            <div id="lin-10"></div>
+                            <div class="box-header">
+                                <b>ثبت دیدگاه</b>
+                            </div>
+
+                            <div class="hints"><i class="fa fa-exclamation"></i>
+                                <div class="des-hints">
+                                    <ul>
+                                        <li>دیدگاه های ارسال شده توسط شما، پس از تایید توسط تیم مدیریت در وب منتشر
+                                            خواهد شد.
+                                        </li>
+                                        <li>پیام هایی که حاوی تهمت یا افترا باشد منتشر نخواهد شد.</li>
+                                        <li>پیام هایی که به غیر از زبان فارسی یا غیر مرتبط باشد منتشر نخواهد شد.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                            <!-- You can start editing here. -->
+
+
+                            <!-- If comments are open, but there are no comments. -->
+
+
+                            <div class="box_wrapper">
+                                <div class="cm_wrapper">
 
 
 
-                            
-                            
-                            <br>
-                        </div>
-                        
-                        
-                      
-                            
+ <form action="{{ route('site.comment.save') }}" method="POST" id="commentform">
+                @csrf
+                @include('error.forms')
+                <input type="hidden" name="commentable_type" value="{{ get_class($article) }}">
+                <input type="hidden" name="commentable_id" value="{{ $article->id }}">
+
+                                        <p>
+
+                                            <input type="text" placeholder="نام شما :" name="name" id="author"
+                                                   value=""
+                                                   size="22" tabindex="1" aria-required='true'/>
+
+                                            <label for="author"></label>
+
+                                        </p>
+
+                                        <p>
+
+                                            <input type="text" placeholder="پست الکترونیکی :" name="email" id="email"
+                                                   value="" size="22" tabindex="2" aria-required='true'/>
+
+                                            <label for="email"></label>
+
+                                        </p>
+
+
+                                        <!--<p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;s&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+
+
+                                        <p>
+
+                                            <textarea type="text" placeholder="متن پیام شما :" name="body"
+                                                      id="comment"
+                                                      class="comment_textarea" cols="100%" rows="10"
+                                                      tabindex="4"></textarea>
+
+                                        </p>
+                                        
+                                        
+                                      
+                    <div class="captcha">
+                        <span>{!! captcha_img() !!}</span>
+                        <button type="button" class="btn btn-danger" class="reload" id="reload">
+                            &#x21bb;
+                        </button>
                     </div>
-
-
-                </div>
-                <div class="col-md-25">
+                   
+                    <input id="captcha" type="text" class="" placeholder="{{ __('site.enter_captcha') }}" name="captcha">
+                
                     
-                     
-                           @if(isset($latests) && !empty($latests))
-                                <div class="box3">
-                                    <h3 class="title title-box">
-                             <span>
-                       آخرین اخبار
-                         </span>
-                                    </h3>
 
-                                    <div class="item-box1">
-                                        @foreach ($latests as $new )
 
-                                            <div class="item4">
-                                                <div class="title1">
-                                                    <h5><a href="{{  $new->path() }}"> <i class="fas fa-caret-left"></i><span>  {{  $new->title  }}</span></a>
-                                                    </h5>
+                                        <input name="submit" type="submit" id="submit" tabindex="5" value="ثبت دیدگاه"/>
+
+                                       
+
+
+                                    </form>
+
+
+                                </div><!-- /cm_wrapper -->
+                            </div><!-- End box_wrapper -->
+
+
+                        </section>
+                    </div>
+                    <div class="col-md-4">
+                        <div id="sidebar-left">
+                            <div class="sidebar-left">
+                                <div class="scrollbar-inner" id="politics-scrollable">
+                                    @if(isset($most_viewed) && !empty($most_viewed) && count($most_viewed) > 0)
+                                        <div class="sidebar-box">
+                                            <div class="column-header"><span class="bullet"></span>
+                                                <h3><b>پربازدیدترین</b></h3>
+                                            </div>
+                                            <div class="sidebar-box-content-left">
+                                                <div class="post-wrap">
+                                                    @foreach($most_viewed as $new)
+                                                     @if(isset($new->article) && !empty($new->article) && $new->article->status == 1)
+                                                        <div class="column-post-item clearfix">
+                                                            <div class="column-post-thumb">
+                                                                <a href="{{ $new->article->path() }}"><img
+                                                                        width="100" height="70"
+                                                                        src="{{ $new->article->picture() }}"
+                                                                        alt="{{ $new->article->title }}"
+                                                                        title="{{ $new->article->title }}"/></a>
+                                                            </div>
+                                                            <h3 class="post-title">
+                                                                <a href="{{ $new->article->path() }}">
+                                                                    {{ $new->article->title  }}
+                                                                </a>
+                                                            </h3>
+                                                        </div>
+                                                        @endif
+                                                    @endforeach
                                                 </div>
                                             </div>
+                                        </div>
+                                    @endif
 
-                                        @endforeach
+                                    @if(isset($latests) && !empty($latests) && count($latests) > 0)
+                                        <div class="sidebar-box">
+                                            <div class="column-header"><span class="bullet"></span>
+                                                <h3><b>جدیدترین مطالب</b></h3>
+                                            </div>
+                                            <div class="sidebar-box-content-left">
+                                                <div class="post-wrap">
+                                                    @foreach($latests as $new)
+                                                        <div class="column-post-item clearfix">
+                                                            <div class="column-post-thumb">
+                                                                <a href="{{ $new->path() }}"><img
+                                                                        width="100" height="70"
+                                                                        src="{{ $new->picture() }}"
+                                                                        alt="{{ $new->title }}"
+                                                                        title="{{ $new->title }}"/></a>
+                                                            </div>
+                                                            <h3 class="post-title">
+                                                                <a href="{{ $new->path() }}">
+                                                                    {{ $new->title }}
+                                                                </a>
+                                                            </h3>
+                                                        </div>
+                                                    @endforeach
 
 
-                                        <div class="all-div"><a href="{{ route('site.blog') }}" class="all-btn" style=" background: #012b81; color: white;">
-                                                آرشیو
-                                            </a></div>
-
-                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
-                            @endif  
-                            
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.col-md-4-->
                 </div>
-
-
+                <!--/.row-->
             </div>
-    </section>
-   
+            <!--/.col-md-10-->
+            <!--<div class="col-md-2 ads">-->
+            <!--    <section id="ads">-->
+            <!--        <div class="all_ads"><a href="http://aftab.demo-qaleb.ir/" target="_blank" rel="nofollow"><img-->
+            <!--                    src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>-->
+            <!--        <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a>-->
+            <!--        </div>-->
+            <!--        <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a>-->
+            <!--        </div>-->
+            <!--    </section>-->
+            <!--</div>-->
+        </div>
+        <!--/.row#content-->
+    </div>
+
 @endsection
 
 @section('scripts')
@@ -519,5 +465,26 @@ echo $output;
                 window.print();
             });
         });
+    </script>
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $('#reload').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('captcha.reload') }}',
+                success: function (data) {
+                    $(".captcha span").html(data.captcha);
+                }
+            });
+        });
+
+
+
+       
+
+
+        
     </script>
 @endsection

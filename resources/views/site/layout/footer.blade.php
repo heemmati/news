@@ -1,252 +1,175 @@
+<div id="footer-top">
+    <div class="container">
+        <div class="footer-top-1">
+            <div id="footer-1">
+                <div class="footer-1">
+                    <div class="sidebar-box-footer mo">
+                        <div class="before_title">
+                            <b>آخرین اخبار</b>
+                        </div>
+                        <div class="sidebar-axenan">
+                            <div class="list_post">
+                                @if(isset($fnews) && !empty($fnews) && count($fnews) > 0)
 
-    <footer id="part--footer">
-        <div class="footer-body">
-            <div class="footer-bottom1">
-    <div class="footer">
-        <div class="container ">
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div id="footer-text1">
-                        <h3> تماس با ما</h3>
-
-
-
-
-
-
-        <span>@lang('site.sahand_contact_footer')</span>
-
-    <p>
-
-        <span>
-            <a href="mailto:info@sahandpress.ir">info@sahandpress.ir</a>
-        </span>
-    </p>                </div>
-                </div>
-                @if (isset($categories) && !empty($categories))
-
-                        <div class="col-xs-12 col-sm-6 col-md-3">
-
-                            <div id="footer-text21">
-                                <h3> گروه های خبری</h3>
-                                <ul class="row">
-                                    @foreach($categories as $category)
-                                    <div class="col-md-4">
+                                    @foreach($fnews as $fn)
                                         <li>
-                                            <a href="{{ $category->path() }}" target="_blank" title="{{ $category->title }}">{{ $category->title }}</a>
+                                            <div class="list_post_contin">
+                                                <h2>
+                                                    <a href="{{ $fn->path() }}">
+                                                        {{ $fn->title  }}
+                                                    </a>
+                                                </h2>
+                                                <time>{{ $fn->timeHandler() }}</time>
+                                            </div>
                                         </li>
-                                    </div>
-
-                                    @endforeach
+                                        @endforeach
 
 
+                                        </ul>
+                                        @endif
 
-
-
-
-
-                                </ul>
                             </div>
                         </div>
-
-                @endif
-
-                @if (isset($socials) && !empty($socials))
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <div id="footer-social">
-                            <h3> شبکه های اجتماعی </h3>
-
-                            <ul>
-
-                                <li><a target="_blank" title="اینستاگرام" href="{{ $socials['instagram']->print }}"> <img src="https://www.tehranrasaneh.ir/frontend/images/Instagram-v051916_200.png" alt=""></a></li>
-
-                                <li><a target="_blank" title="واتسآپ" href="{{ $socials['watsapp']->print }}"> <img src="https://www.tehranrasaneh.ir/frontend/images/img99.png" alt=""> </a></li>
-
-
-                                <li><a target="_blank" title="تلگرام" href="{{ $socials['telegram']->print }}"> <img src="https://www.tehranrasaneh.ir/frontend/images/Telegram_logo.svg.png" alt=""> </a></li>
-
-                                <li><a target="_blank" title="آپارات" href="{{ $socials['aparat']->print }}"> <img src="https://www.tehranrasaneh.ir/frontend/images/aparat.png" alt=""> </a></li>
-
-
-                            </ul>
-
-
-
-
-
-                        </div>
                     </div>
-                @endif
-
-                @if (isset($quick_menu_items) && !empty($quick_menu_items))
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <div id="footer-text2">
-                            <h3> دسترسی سریع </h3>
-                            <ul class="row">
-                                @foreach($quick_menu_items as $item)
-                                <div class="col-md-4">
-                                    <li>
-                                        <a href="{{ $item->link }}" target="_blank" title="{{ $item->title }}">{{ $item->title }}</a>
-                                    </li>
+                </div>
+            </div>
+        </div>
+        <div class="footer-top-2">
+            <div id="footer-2">
+                <div class="footer-2">
+                    @if(isset($footer_news) && !empty($footer_news) && count($footer_news) > 0)
+                        <div class="sidebar-box-footer mo">
+                            <div class="before_title"><b>اخبار در صدر</b></div>
+                            <div class="sidebar-box-footer-content">
+                                <div class="post-wrap">
+                                    @foreach($footer_news as $fonew)
+                                        <div class="column-post-item clearfix">
+                                            <div class="column-post-thumb">
+                                                <a href="{{ $fonew->path() }}"><img
+                                                        width="100" height="70"
+                                                        src="{{ \Illuminate\Support\Facades\Storage::url($fonew->image) }}"
+                                                        alt="{{ $fonew->title }}"
+                                                        title="{{ $fonew->title }}"/></a>
+                                            </div>
+                                            <h2 class="post-title">
+                                                <a
+                                                    href="{{ $fonew->path() }}">
+                                                    {{ $fonew->title }}
+                                                </a>
+                                            </h2>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                @endforeach
-                            </ul>
+                            </div>
                         </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="footer-top-3">
+            <div id="footer-3">
+                <div class="footer-3">
+                    <div class="sidebar-box-footer mo">
+                        @if(isset($footer_about) && !empty($footer_about))
+                            <div class="before_title"><b>درباره سایت</b></div>
+                            <div class="sidebar-box-footer-content">
+                                <div class="post-wrap">
+                                    <div class="textwidget">
+
+                                        <p>
+                                            {{ $footer_about->print }}
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
-                @endif
-
-
+                    <div class="sidebar-box-footer mo">
+                        <div class="before_title"><b>برچسب ها</b></div>
+                        @if(isset($footer_tags) && !empty($footer_tags) && count($footer_tags) > 0)
+                            <div class="sidebar-box-footer-content">
+                                <div class="post-wrap">
+                                    <div class="tagcloud">
+                                        @foreach($footer_tags as $ftag)
+                                            <a
+                                                href="{{ $ftag->path()  }}"
+                                                class="tag-cloud-link" aria-label="{{ $ftag->title }}">{{ $ftag->title }}</a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
+    <footer id="footer">
+        <div class="container" id="footer-container">
+            <div class="clearfix">
+                <a id="footer-logo" href="{{ url('/') }}">
+
+                    @ischeck($general['logo'])
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url($general['logo']->print) }}"
+                         alt="@lang('site.site_name')"/>
+                    @endischeck
 
 
-
-
-
-    </div> </div>
-        <div class="footer-bottom">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                            <div class="footer-social-link">
-                                <div class="social-link">
-                                    <a href="{{ $socials['watsapp']->print }}"><i class="fab fa-whatsapp"></i> <span> </span></a>
-                                    <a href="{{ $socials['telegram']->print }}"><i class="fab fa-twitter"></i>  <span> </span></a>
-                                    <a href="#"><i class="{{ $socials['instagram']->print }}"></i>  <span> </span></a>
-
-                                </div>
-                            </div>
-
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-
-                <div class="copy-right">
-                    <p class="eng--font">طراحی سایت و بهینه سازی شده توسط : <a href="https://inten.asia">شرکت اینتن</a></p>
+                </a>
+                <div id="copyright">
+                   <p>
+                       
+<a href="https://www.eepek.com/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA" target="_blank">طراحی سایت</a>
+و
+<a href="https://www.eepek.com/%D8%B3%D8%A6%D9%88-%D9%88-%D8%A8%D9%87%DB%8C%D9%86%D9%87-%D8%B3%D8%A7%D8%B2%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA" target="_blank">بهینه سازی</a>
+ توسط
+ <a href="https://eepek.com">ایپک</a>
+                    </p>
+                    <p>@lang('site.use_with_name') </p>
                 </div>
-                    </div>
+                <div class="pull-left hidden-sm hidden-xs clearfix" id="social-icons">
+                    <ul class="clearfix"><br>
+                        <ul class="header-social">
+                            <li class="facebook"><a href="آدرس لینک شما"></a></li>
+                            <li class="twitter"><a href="آدرس لینک شما"></a></li>
+                            <li class="instagram"><a href="آدرس لینک شما"></a></li>
+                            <li class="telegram"><a href="آدرس لینک شما"></a></li>
+                            <li class="googleplus"><a href="آدرس لینک شما"></a></li>
+                            <li class="aparat"><a href="آدرس لینک شما"></a>
+                            <li class="youtube"><a href="آدرس لینک شما"></a>
+                            <li class="rss"><a href="http://aftab.demo-qaleb.ir/feed/rss/"></a></li>
 
 
+                        </ul>
+                        <br>
+                        <div>
+                            <ul id="menu-%d8%a8%d8%a7%d9%84%d8%a7-%d9%88-%d9%81%d9%88%d8%aa%d8%b1-1" class="menu">
+                                <li><a href="http://aftab.demo-qaleb.ir/feed/rss/">خوراک</a></li>
+                                <li><a href="http://#">آب
+                                        و هوا</a></li>
+                                <li><a href="http://#">قیمت
+                                        ها</a></li>
+                                <li><a href="http://#">اوقات
+                                        شرعی</a></li>
+                            </ul>
+                        </div>
+                    </ul>
 
                 </div>
-
+            </div>
+            <div class="developed-box">
+                <li><a href="https://eepek.com/" title="طراحی و توسعه : ایپک" target="_blank">
+                        <div class="developed"></div>
+                    </a></li>
             </div>
         </div>
+
     </footer>
 
-    <script src="{{ url('hadiloo-theme') }}/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url('hadiloo-theme') }}/js/owl.carousel.js"></script>
-
-    <!--mega menu-->
-
-    <script>
-                $(document).ready(function() {
-                  $('.demos').owlCarousel({
-                    loop: true,
-                    margin: 15, nav: true,
-     autoplay:true, dots: true,
-        autoplayTimeout:4000,
-        autoplayHoverPause:true,	  navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"],
-                    responsiveClass: true,
-                    responsive: {
-                      0: {
-                        items: 1,
-                        nav: true
-                      },
-                      1000: {
-                        items: 2,dots:true,
-                        nav: true
-                      },
-                      1200: {
-                        items: 5,
-                        nav: true,
-                        loop: true,
-                        margin: 15
-                      }
-                    }
-                  })
-                })
-
-        $(document).ready(function () {
-            $('.row-item1').owlCarousel({
-                loop: true,
-                margin: 10, items: 4,  nav: false,
-                responsiveClass: true, dots: true,
-                responsive: {
-                    0: {
-                        items: 1, margin: 10,
-                        nav: true, dots: true,
-                    },
-                    600: {
-                        items: 2, margin: 10,
-                        nav: true, dots: true,
-                    },
-                    1000: {
-                        items: 4,
-                        nav: false, dots: true,
-                        loop: true,
-                        margin: 10
-                    }
-                }
-            })
-               $('.row-item85').owlCarousel({
-                loop: true,
-                margin: 10, items: 3,  nav: false,
-                responsiveClass: true, dots: true,
-                responsive: {
-                    0: {
-                        items: 1, margin: 10,
-                        nav: true, dots: true,
-                    },
-                    600: {
-                        items: 2, margin: 10,
-                        nav: true, dots: true,
-                    },
-                    1000: {
-                        items: 3,
-                        nav: false, dots: true,
-                        loop: true,
-                        margin: 10
-                    }
-                }
-            })
-        })
-
-
-    </script>
-
-    <!--back to top-->
-    <script>
-        $(document).ready(function () {
-            $('body').append('<div id="scrollTop" class="btn btn-success"><div class="circle"><div class="wave"><i class="fas fa-angle-double-up"></i><span class="glyphicon glyphicon glyphicon-arrow-up"></span></div></div></div>');
-            $(window).scroll(function () {
-                if ($(this).scrollTop() != 0) {
-                    $('#scrollTop').fadeIn();
-                } else {
-                    $('#scrollTop').fadeOut();
-                }
-            });
-
-            $('#scrollTop').on('click', function (e) {
-                e.preventDefault();
-                $('html, body').animate({scrollTop: 0}, '3000');
-            });
-            
-            
-                    
-
-
-
-
-        });
-        
-
-
-
-    </script>
-
-
-
-
+    <div id="topcontrol" class="fa fa-angle-up" title="رفتن به بالا"></div>
+    <script type='text/javascript' src='{{ url('taj-theme') }}/assets/js/scripts.js'></script>
     </body>
+
     </html>
