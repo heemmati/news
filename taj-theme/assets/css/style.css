@@ -3609,7 +3609,7 @@ ul.respond-detile li {
     display: block;
     border-width: 8px;
     border-style: solid;
-    border-color: transparent transparent transparent #ffbbbe;
+    border-color: transparent transparent transparent var(--main);
     position: absolute;
     top: 20px;
     right: -16px;
@@ -3648,7 +3648,7 @@ ul.respond-detile li {
 }
 
 .hints i {
-    color: #5d5d5d;
+    color: #fff;
     font-size: 20px;
     border: 1px solid var(--second2);
     background-color: var(--third2);

@@ -17,7 +17,7 @@
 @endif
 <div class="container">
     <div class="row" id="content">
-        <div class="col-md-12">
+        <div class="col-md-10">
             <div class="row">
                 <div class="col-md-8 middl">
 
@@ -400,7 +400,7 @@
 
                                                 <h3 class="post-title2">
 
-                                                    <a href="{{ $taga->title }}">{{ $taga->title }}</a>
+                                                    <a href="{{ $taga->path() }}">{{ $taga->title }}</a>
                                                 </h3>
                                                 <div class="post-excerpt-summary">
                                                     <p>
@@ -599,16 +599,16 @@
             <!--/.row-->
         </div>
         <!--/.col-md-10-->
-        <!--<div class="col-md-2 ads">-->
-        <!--    <section id="ads">-->
-        <!--        <div class="all_ads"><a href="http://aftab.demo-qaleb.ir/" target="_blank" rel="nofollow"><img-->
-        <!--                    src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>-->
-        <!--        <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img-->
-        <!--                    src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>-->
-        <!--        <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img-->
-        <!--                    src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>-->
-        <!--    </section>-->
-        <!--</div>-->
+        <div class="col-md-2 ads">
+            <section id="ads">
+                <div class="all_ads"><a href="http://aftab.demo-qaleb.ir/" target="_blank" rel="nofollow"><img
+                            src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>
+                <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img
+                            src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>
+                <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img
+                            src="{{ url('taj-theme') }}/assets/img/ads-2.png"></a></div>
+            </section>
+        </div>
     </div>
     <!--/.row#content-->
 </div>
