@@ -19,7 +19,179 @@
     <div class="row" id="content">
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-8 middl">
+                <div class="col-md-3">
+                    <div id="sidebar-left">
+                        <div class="sidebar-left">
+                            <div class="scrollbar-inner" id="politics-scrollable">
+
+                                @if(isset($mviews) && !empty($mviews) && count($mviews) >0)
+                                    <div class="sidebar-box">
+                                        <div class="column-header"><span class="bullet"></span>
+                                            <h3><b>@lang('site.most_viewd')</b></h3>
+                                        </div>
+                                        <div class="sidebar-box-content-left">
+                                            <div class="post-wrap">
+                                                @foreach($mviews as $new)
+                                                    @if(isset($new->article) && !empty($new->article) && $new->article->status == 1)
+                                                        <div class="column-post-item clearfix">
+                                                            <div class="column-post-thumb">
+                                                                <a href="{{ $new->article->path() }}"><img
+                                                                            width="100" height="70"
+                                                                            src="{{ $new->article->picture() }}"
+                                                                            alt="{{ $new->article->title }}"
+                                                                            title="{{ $new->article->title }}"/></a>
+                                                            </div>
+                                                            <h3 class="post-title">
+                                                                <small class=" text-muted">{{ $new->article->head_title }}</small>  <a
+                                                                        href="{{ $new->article->path() }}">
+                                                                    {{ $new->article->title }}
+                                                                </a>
+                                                            </h3>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if(isset($mcomments) && !empty($mcomments) && count($mcomments) >0)
+                                    <div class="sidebar-box">
+                                        <div class="column-header"><span class="bullet"></span>
+                                            <h3><b>@lang('site.most_commented')</b></h3>
+                                        </div>
+                                        <div class="sidebar-box-content-left">
+                                            <div class="post-wrap">
+                                                @foreach($mcomments as $comment)
+                                                    <div class="column-post-item clearfix">
+                                                        @if(isset($comment->article) && !empty($comment->article) && $comment->article->status == 1)
+                                                            <div class="column-post-thumb">
+                                                                <a href="{{ $comment->article->path() }}"><img
+                                                                            width="100" height="70"
+                                                                            src="{{ $comment->article->picture() }}"
+                                                                            alt="{{ $comment->article->title }}"
+                                                                            title="{{ $comment->article->title }}"/></a>
+                                                            </div>
+                                                            <h3 class="post-title">
+                                                                <a href="{{ $comment->article->path() }}">
+                                                                    {{ $comment->article->title }}
+                                                                </a>
+                                                            </h3>
+                                                        @endif
+                                                    </div>
+                                                @endforeach
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img
+                                                src="{{ url('taj-theme') }}/assets/img/ads-1.png"></a></div>
+
+                                @if(isset($notes) && !empty($notes) && count($notes) > 0)
+                                    <div class="box_author">
+                                        <div class="box-header"><b><i class="fa fa-book" aria-hidden="true"></i>
+                                                @lang('site.notes')</b><span><a
+                                                        href="{{ route('site.blog') }}">@lang('site.archive')</a></span>
+                                        </div>
+                                        @if(isset($notes[0]) && !empty($notes[0]) )
+                                            <div class="box_author-top">
+                                                <a class="box_author-thumb"
+                                                   href="{{ $notes[0]->path() }}"><img
+                                                            width="293" height="200"
+                                                            src="{{ $notes[0]->picture() }}"
+                                                            alt="{{ $notes[0]->title }}"
+                                                            title="{{ $notes[0]->title }}"/></a>
+                                                <div id="lin-10"></div>
+                                                <small class=" text-muted">@lang('site.author')
+                                                    : @lang('site.author_name')</small>  <small
+                                                        class=" text-author "><i
+                                                            class="fa fa-stop" aria-hidden="true"></i>
+
+                                                    {{ $notes[0]->head_title }}
+
+                                                </small>
+                                                <div id="lin-10"></div>
+                                                <div class="box_author-top-titl"><a
+                                                            href="{{ $notes[0]->path() }}">
+                                                        {{ $notes[0]->title }}
+                                                    </a></div>
+
+                                                <p>
+                                                    {{ $notes[0]->description }}
+                                                </p>
+                                            </div>
+                                        @endif
+
+                                        @if(isset($notes) && !empty($notes) && count($notes) > 0)
+                                            <div class="author-bottom">
+                                                @foreach($notes as $key => $bottom)
+                                                    @if($key > 0)
+                                                        <div class="author-box">
+                                                            <div class="author-box-image">
+                                                                <a href="{{ $bottom->path() }}"><img
+                                                                            width="50" height="50"
+                                                                            src="{{ $bottom->picture() }}"
+                                                                            alt="{{ $bottom->title }}"
+                                                                            title="{{ $bottom->title }}"/></a>
+                                                            </div>
+                                                            <small class=" text-muted"><i class="fa fa-stop"
+                                                                                          aria-hidden="true"></i>
+                                                                {{ $bottom->head_title }}</small>
+                                                            <div class="author-box-txt"><a
+                                                                        href="{{ $bottom->path() }}">
+                                                                    {{ $bottom->title }}
+                                                                </a></div>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endif
+
+
+                                @if(isset($specifics) && !empty($specifics) && count($specifics) > 0)
+
+                                    <div class="sidebar-box">
+                                        <div class="column-header"><span class="bullet"></span>
+                                            <p><b>@lang('site.specifics')</b></p>
+                                        </div>
+                                        <div class="sidebar-axenan">
+                                            <div class="list_post">
+                                                <ul>
+                                                    @foreach($specifics as $special)
+                                                        <li>
+                                                            <div class="list_post_contin">
+                                                                <h2>
+                                                                    <a href="{{ $special->path() }}">
+
+                                                                        {{ $special->title }}
+                                                                    </a>
+                                                                </h2>
+                                                                <time>{{ $special->timeHandler() }}</time>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+
+
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="all_ads"><a href="" target="_blank" rel="nofollow"><img
+                                                src="{{ url('taj-theme') }}/assets/img/ads-1.png"></a></div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 middl">
 
                     @if(isset($bignews) && !empty($bignews) && count($bignews) > 0)
 
@@ -134,7 +306,7 @@
                                                         {{ $important->head_title }}</small>
                                                 @endif
 
-                                                <br>
+
                                                 <a
                                                         href="{{ $important->path() }}">
                                                     {{ $important->title }}
@@ -422,7 +594,7 @@
                     @endif
 
                 </div>
-                <div class="col-md-4 left">
+                <div class="col-md-3 left">
                     <div id="sidebar-left">
                         <div class="sidebar-left">
                             <div class="scrollbar-inner" id="politics-scrollable">
@@ -509,19 +681,19 @@
                                                             title="{{ $notes[0]->title }}"/></a>
                                                 <div id="lin-10"></div>
                                                 <small class=" text-muted">@lang('site.author')
-                                                    : @lang('site.author_name')</small> <br> <small
+                                                    : @lang('site.author_name')</small>  <small
                                                         class=" text-author "><i
                                                             class="fa fa-stop" aria-hidden="true"></i>
 
                                                     {{ $notes[0]->head_title }}
 
-                                                </small><br>
+                                                </small>
                                                 <div id="lin-10"></div>
                                                 <div class="box_author-top-titl"><a
                                                             href="{{ $notes[0]->path() }}">
                                                         {{ $notes[0]->title }}
                                                     </a></div>
-                                                <br>
+
                                                 <p>
                                                     {{ $notes[0]->description }}
                                                 </p>
