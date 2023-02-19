@@ -2,4 +2,5 @@
 .htaccess
 .idea
 storage
-taj-theme
+taj-theme/assets/css/hemmat.css
+resources/views/site
