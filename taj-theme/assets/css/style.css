@@ -14913,6 +14913,6 @@ ul.single-social:before{
 .item-image{
     width:20%;
 }
-.column-post-item100{
+.column-post-item100 .post-title{
     width: 100%;
 }
