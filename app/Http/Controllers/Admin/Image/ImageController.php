@@ -130,7 +130,7 @@ class ImageController extends Controller
             ->Alt($data['alt'])
             ->Start($data['start_date'])
             ->End($data['end_date'])
-            ->get();
+            ->paginate(20);
 
         return $images;
     }
