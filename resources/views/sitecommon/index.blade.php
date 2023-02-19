@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7 middl">
+                <div class="col-md-6 middl">
 
                     @if(isset($bignews) && !empty($bignews) && count($bignews) > 0)
 
