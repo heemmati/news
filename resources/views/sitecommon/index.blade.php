@@ -425,7 +425,7 @@
                                                 href="{{ route('site.blog') }}">@lang('site.archive')</a></span>
                                 </div>
                                 @foreach($bottoms as $bottom)
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="lead-post-excerpt">
                                             <a class="lead-post-excerpt-thumb"
                                                href="{{ $bottom->path() }}"><img
