@@ -58,7 +58,7 @@ class SiteController extends Controller
           $importants =  Cache::remember('important', 3600, function () {
         $pos1 = Position::select('id')->where('code', 'important')->first();
         return $pos1->articles()->select('articles.id', 'articles.status', 'articles.head_title', 'articles.created_at', 'articles.updated_at')
-        ->orderBy('articles.updated_at', 'DESC')->take(4)->with(['base' => function ($query) {
+        ->orderBy('articles.updated_at', 'DESC')->take(3)->with(['base' => function ($query) {
                 $query->select('id', 'title', 'baseable_type', 'baseable_id', 'image' , 'slug', 'description');
             }])->get();
 
