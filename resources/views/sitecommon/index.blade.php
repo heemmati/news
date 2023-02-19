@@ -222,7 +222,7 @@
                                 <div class="box-header"><b> :: @lang('site.choosen_news')</b><span><a
                                                 href="{{ route('site.blog') }}">@lang('site.archive')</a></span></div>
                                 @foreach($importants as $important)
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="lead-post-excerpt">
                                             <a class="lead-post-excerpt-thumb"
                                                href="{{ $important->path() }}"><img
@@ -528,7 +528,7 @@
                     @endif
 
                 </div>
-                <div class="col-md-2 left">
+                <div class="col-md-3 left">
                     <div id="sidebar-left">
                         <div class="sidebar-left">
                             <div class="scrollbar-inner" id="politics-scrollable">
